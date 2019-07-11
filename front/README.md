@@ -1,0 +1,1 @@
+<h1>React part</h1>
