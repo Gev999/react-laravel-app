@@ -12,9 +12,9 @@ class CompanyCreateOrEdit extends Component {
             name: null,
             email: null,
             website: null,
+            file: null,
         },
         isEdit: false,
-        imgSrc: '',
         errors: {
             error: null,
             name: null,
@@ -33,15 +33,6 @@ class CompanyCreateOrEdit extends Component {
                         company: response,
                         isEdit: true,
                     });
-                })
-                .then(() => {
-                    const val = this.state.company.logo ?
-                        `/storage/logos/${this.state.company.logo}` : this.state.isEdit ? '/storage/logos/default.png' : '';
-                    if (val) {
-                        this.setState({
-                            imgSrc: val,
-                        })
-                    }
                 })
                 .catch(error => {
                     this.setState({
@@ -71,7 +62,7 @@ class CompanyCreateOrEdit extends Component {
         this.setState({
             company: {
                 ...this.state.company,
-                logo: e.target.files[0],
+                file: e.target.files[0],
             }
         })
         let files = e.target.files || e.dataTransfer.files;
@@ -80,7 +71,10 @@ class CompanyCreateOrEdit extends Component {
         let reader = new FileReader();
         reader.onload = (e) => {
             this.setState({
-                imgSrc: e.target.result,
+                company: {
+                    ...this.state.company,
+                    logo: e.target.result,
+                }
             })
         };
         reader.readAsDataURL(files[0]);
@@ -115,7 +109,7 @@ class CompanyCreateOrEdit extends Component {
                 <form className="form-container" encType="multipart/form-data" onSubmit={this.formHandle}>
                     <div className="form-group">
                         <label htmlFor="logo">Logo: </label>
-                        <img alt="" src={`${this.state.imgSrc}`} style={{ width: '70px' }} className="ml-2 mb-2" />
+                        <img alt="" src={company.logo} style={{ width: '70px' }} className="ml-2 mb-2" />
                         <br />
                         <input type='file' id="logo" name="logo" accept="image/*" onChange={this.onImageChangeHandle} />
                     </div>
@@ -128,7 +122,7 @@ class CompanyCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="name">Company name: </label>
                         <input className={`form-control ${nameErr}`} id="name" name="name" type="text"
-                            value={company.name ? company.name : ''} onChange={this.onChangeHandle}  />
+                            value={company.name ? company.name : ''} onChange={this.onChangeHandle}  required/>
                     </div>
                     {nameErr &&
                         <div className="form-group">
@@ -151,7 +145,7 @@ class CompanyCreateOrEdit extends Component {
                         <input className="form-control" id="website" name="website" type="text"
                             value={company.website ? company.website : ''} onChange={this.onChangeHandle} />
                     </div>
-                    <button className="btn btn-outline-primary">{isEdit ? 'Edit' : 'Create'}</button>
+                    <button className="btn btn-outline-primary">{isEdit ? 'Update' : 'Create'}</button>
                     <Link to="/companies" className="ml-2 btn btn-outline-success">Cancel</Link>
                 </form>
             </div>

@@ -17,7 +17,11 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        return Company::all()->toJson();
+       $companies =  Company::all();
+       foreach($companies as $company) {
+           $company->logo = self::getLogoPath($company);
+       }
+       return $companies->toJson();
     }
 
     /**
@@ -43,6 +47,7 @@ class CompaniesController extends Controller
     {
         $company = Company::find($id);
         if ($company) {
+            $company->logo = self::getLogoPath($company);
             return $company->toJson();
         }
         return response()->json([
@@ -88,6 +93,11 @@ class CompaniesController extends Controller
         return response()->json([
             'error' => 'Company with such id does not exist',
         ], 404);
+    }
+
+    private function getLogoPath($company) {
+        $fullPath = url('/storage/logos');
+        return $company->logo ? $fullPath . '/' . $company->logo : $fullPath . '/default.png';
     }
 
     private function addData($company, $request, $isUpdate = false)

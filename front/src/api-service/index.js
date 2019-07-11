@@ -31,13 +31,13 @@ class ApiService
     }
 
     createCompany = async (company) => {
-        const { name, email, website, logo} = company;
+        const { name, email, website, file} = company;
 
         const formData = new FormData();
         formData.set('name', name ? name : '');
         formData.set('email', email ? email : '');
         formData.set('website', website? website : '');
-        formData.append('logo', logo ? logo : '');
+        formData.append('logo', file ? file : '');
 
         return await axios({
             method: 'POST',
@@ -51,7 +51,7 @@ class ApiService
     }
     
     updateCompany = async (company) => {
-        const { id, name, email, website, logo } = company;
+        const { id, name, email, website, file } = company;
 
         const formData = new FormData();
         formData.set('id', id ? id : '');
@@ -59,7 +59,7 @@ class ApiService
         formData.set('email', email ? email : '');
         formData.set('website', website? website : '');
         if (typeof logo==='object') {
-            formData.append('logo', logo ? logo : '');
+            formData.append('logo', file ? file : '');
         }
         formData.append('_method', 'PUT');
 

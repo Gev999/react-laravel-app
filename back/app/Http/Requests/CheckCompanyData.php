@@ -24,7 +24,6 @@ class CheckCompanyData extends FormRequest
      */
     public function rules()
     {
-        //dd($this);
         return [
             'name' => 'required',
             'email' => 'email|nullable|unique:companies,email,'.$this->id,

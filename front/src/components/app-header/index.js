@@ -8,7 +8,7 @@ const Header = (props)=>{
             <nav className="navbar navbar-default">
                 <div className="container mt-4">
                     <div>
-                        <Link to="/" className="navbar-brand">Home</Link>
+                        <Link to="/" className="navbar-brand" style={{color: "grey"}}>Home</Link>
                         <Link to="/companies" className="btn btn-outline-secondary mr-4 ml-4">Companies</Link>
                         <Link to="/employees" className="btn btn-outline-secondary">Employees</Link>
                     </div>

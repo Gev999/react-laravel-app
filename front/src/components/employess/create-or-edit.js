@@ -185,7 +185,7 @@ class EmployeeCreateOrEdit extends Component {
                         </div>
                     }
 
-                    <button className="btn btn-outline-primary">{isEdit ? 'Edit' : 'Create'}</button>
+                    <button className="btn btn-outline-primary">{isEdit ? 'Update' : 'Create'}</button>
                     <Link to="/employees" className="ml-2 btn btn-outline-success">Cancel</Link>
                 </form>
             </div>

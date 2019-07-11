@@ -43,10 +43,9 @@ class Companies extends Component {
             width: '50px',
         }
         return companies.map((company) => {
-            let imgSrc = company.logo ? company.logo : 'default.png'
             return (
                 <tr key={company.id}>
-                    <td><img alt="" src={`/storage/logos/${imgSrc}`} style={imgStyle} /></td>
+                    <td><img alt="" src={company.logo} style={imgStyle} /></td>
                     <td>{company.name}</td>
                     <td>{company.email}</td>
                     <td>{company.website}</td>
