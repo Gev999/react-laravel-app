@@ -6,21 +6,9 @@ import { Link, withRouter } from 'react-router-dom';
 class CompanyCreateOrEdit extends Component {
     
     state = {
-        company: {
-            id: null,
-            logo: null,
-            name: null,
-            email: null,
-            website: null,
-            file: null,
-        },
+        company: {},
         isEdit: false,
-        errors: {
-            error: null,
-            name: null,
-            email: null,
-            logo: null,
-        },
+        errors: {},
     }
     apiService = this.props.apiService;
 

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { loggedOut } from '../../actions';
+import { connect } from 'react-redux';
 
 const Header = (props)=>{
 
@@ -12,7 +14,7 @@ const Header = (props)=>{
                         <Link to="/companies" className="btn btn-outline-secondary mr-4 ml-4">Companies</Link>
                         <Link to="/employees" className="btn btn-outline-secondary">Employees</Link>
                     </div>
-                    <button className="btn btn-link" onClick={()=>logOutHandle(props)}>Log out</button>
+                    <button className="btn btn-link" onClick={props.loggedOut}>Log out</button>
                 </div>
             </nav>
             <hr />
@@ -20,9 +22,7 @@ const Header = (props)=>{
     )
 }
 
-function logOutHandle(props) {
-    localStorage.removeItem('token');
-    props.history.push('/login');
-}
+//const mapDispatchToProps = (dispatch) => bindActionCreators({ loggedOut }, dispatch);
+const mapDispatchToProps = { loggedOut }
 
-export default withRouter(Header);
+export default connect(null, mapDispatchToProps)(Header);

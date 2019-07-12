@@ -6,24 +6,10 @@ import { Link, withRouter } from 'react-router-dom';
 class EmployeeCreateOrEdit extends Component {
     
     state = {
-        employee: {
-            id: null,
-            first_name: null,
-            last_name: null,
-            company_id: '',
-            email: null,
-            phone: null,
-        },
+        employee: {},
         companies: [],
         isEdit: false,
-        errors: {
-            error: null,
-            first_name: null,
-            last_name: null,
-            company_id: null,
-            email: null,
-            phone: null,
-        },
+        errors: {},
     }
     apiService = this.props.apiService;
 
@@ -151,7 +137,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="company-id">Company</label>
                         <select name="company_id" className={`form-control ${companyIdErr}`} id="company-id"
-                            value={employee.company_id} onChange={this.selectHandle} required>
+                            value={employee.company_id ? employee.company_id : ''} onChange={this.selectHandle} required>
                             {!employee.company_id && <option disabled value=''>Choose Company</option>}
                             {this.optionsList()}
                         </select>
