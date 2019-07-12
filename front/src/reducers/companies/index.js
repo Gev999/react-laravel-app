@@ -1,31 +1,89 @@
-import * as companies from '../handles/companies';
-
 const companiesHandle = (state, action) => {
-    switch(action.type) {
+    switch (action.type) {
 
-        case 'FETCH_COMPANIES_REQUEST': 
-            return companies.getAllCompanies(state, action.payload);
-        
+        case 'FETCH_COMPANIES_REQUEST':
+            return {
+                ...state,
+                companies: action.payload,
+            }
+
         case 'FETCH_COMPANY_REQUEST':
-            return companies.getCompany(state, action.payload);
+            return {
+                ...state,
+                company: action.payload,
+                errors: {
+                    ...state.errors,
+                    company: {
+                        ...state.errors.company,
+                        error: false,
+                    }
+                }
+            }
 
         case 'FETCH_COMPANY_FAILED':
-            return companies.failedToLoad(state, action.payload);
-        
+            return {
+                ...state,
+                errors: {
+                    ...state.errors,
+                    company: {
+                        ...state.errors.company,
+                        error: action.payload,
+                    }
+                }
+            }
+
         case 'RESET_COMPANY':
-            return companies.setCompanyEmpty(state);
+            return {
+                ...state,
+                company: {},
+                errors: {
+                    ...state.errors,
+                    company: {}
+                }
+            }
 
         case 'COMPANY_DATA_CHANGE':
-            return companies.setCompanyData(state, action.payload)
+            return {
+                ...state,
+                company: {
+                    ...state.company,
+                    [action.payload.name]: action.payload.value,
+                },
+                errors: {
+                    ...state.errors,
+                    company: {
+                        ...state.errors.company,
+                        [action.payload.name]: '',
+                    }
+                }
+            }
 
         case 'FAILED_COMPANY_REQUEST':
-            return companies.failedRequest(state, action.payload)
+            return {
+                ...state,
+                errors: {
+                    ...state.errors,
+                    company: action.payload
+                }
+            }
 
         case 'COMPANY_LOGO_FILE':
-            return companies.setCompanyLogoFile(state, action.payload)
-        
+            return {
+                ...state,
+                company: {
+                    ...state.company,
+                    file: action.payload,
+                }
+            }
+
         case 'COMPANY_LOGO':
-            return companies.setCompanyLogo(state, action.payload)
+            return {
+                ...state,
+                company: {
+                    ...state.company,
+                    logo: action.payload,
+                }
+            }
 
         default: return state;
     }

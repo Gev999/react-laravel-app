@@ -2,93 +2,56 @@ import React, { Component } from 'react';
 import { withApiService } from '../hoc-helpers';
 import ErrorBoundary from '../error-boundary';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/employees';
+import { getCompaniesList } from '../../actions/companies';
 
 class EmployeeCreateOrEdit extends Component {
     
-    state = {
-        employee: {},
-        companies: [],
-        isEdit: false,
-        errors: {},
-    }
     apiService = this.props.apiService;
+    isEdit  = false;
 
     componentWillMount() {
         const { id } = this.props.match.params;
+        this.isEdit = !!id;
         if (id) {
             this.apiService.getEmployee(id)
                 .then(response => {
-                    this.setState({
-                        employee: response,
-                        isEdit: true,
-                    });
+                    this.props.getEmployee(response)
                 })
                 .then(() => {
                     this.apiService.getAllCompanies()
                         .then(response => {
-                            this.setState({
-                                companies: response,
-                            });
+                            this.props.getCompaniesList(response)
                         })
                 })
                 .catch(error => {
-                    this.setState({
-                        errors: {
-                            ...this.state.errors,
-                            error: error.response.data.error,
-                        }
-                    });
+                    this.props.failedToLoad(error.response.data.error)
                 })
         } else {
+            this.props.setEmployeeEmpty()
             this.apiService.getAllCompanies()
                 .then(response => {
-                    this.setState({
-                        companies: response,
-                    });
+                    this.props.getCompaniesList(response)
                 })
         }
     }
 
-    onChangeHandle = (e) => {
-        this.setState({
-            employee: {
-                ...this.state.employee,
-                [e.target.name]: e.target.value
-            },
-            errors: {
-                ...this.state.errors,
-                [e.target.name]: null,
-            }
-        })
-    }
-
-    selectHandle = (e) => {
-        this.setState({
-            employee: {
-                ...this.state.employee,
-                company_id: e.target.value,
-            }
-        })
-    }
-
-
     formHandle = (e) => {
         e.preventDefault();
-        const { employee, isEdit } = this.state;
-        const handle = isEdit ? this.apiService.updateEmployee : this.apiService.createEmployee;
+        const { employee } = this.props;
+        const handle = this.isEdit ? this.apiService.updateEmployee : this.apiService.createEmployee;
         handle(employee)
-            .then(response => {
+            .then(() => {
                 this.props.history.push('/employees');
             })
             .catch(error => {
-                this.setState({
-                    errors: error.response.data.errors,
-                })
+                this.props.failedRequest(error.response.data.errors)
             })
     }
 
     optionsList = () => {
-        const { companies } = this.state;
+        const { companies } = this.props;
         return companies.map((company) => {
             return <option value={company.id} key={company.id}>{company.name}</option>
         })
@@ -96,7 +59,7 @@ class EmployeeCreateOrEdit extends Component {
 
 
     render() {
-        const { employee, isEdit, errors, companies } = this.state;
+        const { employee, setEmployeeData, errors, companies } = this.props;
         if (errors.error) {
             return <ErrorBoundary error={errors.error} />
         }
@@ -115,7 +78,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="first-name">First name: </label>
                         <input className={`form-control ${firstNameErr}`} id="first-name" name="first_name" type="text"
-                            value={employee.first_name ? employee.first_name : ''} onChange={this.onChangeHandle} required />
+                            value={employee.first_name ? employee.first_name : ''} onChange={setEmployeeData} required />
                     </div>
                     {firstNameErr &&
                         <div className="form-group">
@@ -126,7 +89,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="last-name">Last name: </label>
                         <input className={`form-control ${lastNameErr}`} id="last-name" name="last_name" type="text"
-                            value={employee.last_name ? employee.last_name : ''} onChange={this.onChangeHandle} required />
+                            value={employee.last_name ? employee.last_name : ''} onChange={setEmployeeData} required />
                     </div>
                     {lastNameErr &&
                         <div className="form-group">
@@ -137,7 +100,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="company-id">Company</label>
                         <select name="company_id" className={`form-control ${companyIdErr}`} id="company-id"
-                            value={employee.company_id ? employee.company_id : ''} onChange={this.selectHandle} required>
+                            value={employee.company_id ? employee.company_id : ''} onChange={setEmployeeData} required>
                             {!employee.company_id && <option disabled value=''>Choose Company</option>}
                             {this.optionsList()}
                         </select>
@@ -151,7 +114,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="mail">Email: </label>
                         <input className={`form-control ${emailErr}`} id="mail" name="email" type="email"
-                            value={employee.email ? employee.email : ''} onChange={this.onChangeHandle}
+                            value={employee.email ? employee.email : ''} onChange={setEmployeeData}
                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
                     </div>
                     {emailErr &&
@@ -163,7 +126,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="phone">Phone: </label>
                         <input className="form-control" id="phone" name="phone" type="text"
-                            value={employee.phone ? employee.phone : ''} onChange={this.onChangeHandle} />
+                            value={employee.phone ? employee.phone : ''} onChange={setEmployeeData} />
                     </div>
                     {phoneErr &&
                         <div className="form-group">
@@ -171,7 +134,7 @@ class EmployeeCreateOrEdit extends Component {
                         </div>
                     }
 
-                    <button className="btn btn-outline-primary">{isEdit ? 'Update' : 'Create'}</button>
+                    <button className="btn btn-outline-primary">{this.isEdit ? 'Update' : 'Create'}</button>
                     <Link to="/employees" className="ml-2 btn btn-outline-success">Cancel</Link>
                 </form>
             </div>
@@ -179,4 +142,20 @@ class EmployeeCreateOrEdit extends Component {
     }
 }
 
-export default withApiService(withRouter(EmployeeCreateOrEdit));
+const mapStateToProps = (state) => {
+    return {
+        employee: state.employee,
+        errors: state.errors.employee,
+        companies: state.companies,
+    }
+}
+
+const mapDispatchToProps = {
+    ...actions,
+    getCompaniesList,
+}
+
+export default withApiService(
+    withRouter(
+        connect(mapStateToProps, mapDispatchToProps)(EmployeeCreateOrEdit)
+    ));

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withApiService } from '../hoc-helpers';
+import { getEmployeesList } from '../../actions/employees';
+import { connect } from 'react-redux';
 
 class Employees extends Component {
-
-    state = {
-        employees: [],
-    }
 
     apiService = this.props.apiService;
 
@@ -17,12 +15,7 @@ class Employees extends Component {
     getEmployees = () => {
         this.apiService.getAllEmployees()
             .then(response => {
-                this.setState({
-                    employees: response,
-                })
-            })
-            .catch(e => {
-                console.log(e.response)
+                this.props.getEmployeesList(response);
             })
     }
 
@@ -30,14 +23,14 @@ class Employees extends Component {
         if (window.confirm('Are you sure?')) {
             const id = e.target.value;
             this.apiService.deleteEmployee(id)
-                .then(res => {
+                .then(() => {
                     this.getEmployees();
                 })
         }
     }
 
     getEmployeesRows = () => {
-        const { employees } = this.state;
+        const { employees } = this.props;
         if (!employees) return null;
         return employees.map((employee) => {
             return (
@@ -59,8 +52,7 @@ class Employees extends Component {
     }
 
     render() {
-        //console.log(this.state.Employees)
-        const { employees } = this.state;
+        const { employees } = this.props;
         const view = employees.length === 0 ? null : this.getEmployeesRows();
         return (
             <div className="container">
@@ -85,4 +77,7 @@ class Employees extends Component {
     }
 }
 
-export default withApiService(Employees)
+const mapStateToProps = ({ employees }) => ({ employees });
+const mapDispatchToProps = { getEmployeesList }
+
+export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Employees));

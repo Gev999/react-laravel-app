@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import ErrorBoundary from '../error-boundary';
 import { withApiService } from '../hoc-helpers';
+import { connect } from 'react-redux';
+import { getEmployee, failedToLoad } from '../../actions/employees';
 
 class Employee extends Component {
 
-    state = {
-        employee: null,
-        error: null,
-    }
     apiService = this.props.apiService;
 
     componentWillMount() {
@@ -18,19 +16,15 @@ class Employee extends Component {
         const { id } = this.props.match.params;
         this.apiService.getEmployee(id)
             .then(response => {
-                this.setState({
-                    employee: response,
-                })
+                this.props.getEmployee(response)
             })
             .catch(e => {
-                this.setState({
-                    error: e.response.data.error,
-                })
+                this.props.failedToLoad(e.response.data.error);
             })
     }
 
     getEmployeeRow = () => {
-        const { employee } = this.state;
+        const { employee } = this.props;
         return (
             <tr>
                 <td>{employee.first_name}</td>
@@ -43,10 +37,10 @@ class Employee extends Component {
     }
 
     render() {
-        if (this.state.error) {
-            return <ErrorBoundary error={this.state.error} />
+        if (this.props.error) {
+            return <ErrorBoundary error={this.props.error} />
         }
-        const row = this.state.employee ? this.getEmployeeRow() : null;
+        const row = this.getEmployeeRow();
         return (
             <div className="container">
                 <table className="table table-hover table-striped table-border">
@@ -68,4 +62,16 @@ class Employee extends Component {
     }
 }
 
-export default withApiService(Employee)
+const mapStateToProps = ( state ) => {
+    return {
+        employee: state.employee,
+        error: state.errors.employee.error,
+    }
+}
+
+const mapDispatchToProps = { 
+    getEmployee,
+    failedToLoad,
+}
+
+export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Employee))

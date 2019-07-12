@@ -21,7 +21,7 @@ const Header = (props)=>{
     )
 }
 
-//const mapDispatchToProps = (dispatch) => bindActionCreators({ loggedOut }, dispatch);
+
 const mapDispatchToProps = { loggedOut }
 
 export default connect(null, mapDispatchToProps)(Header);

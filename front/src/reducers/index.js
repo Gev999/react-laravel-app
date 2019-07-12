@@ -1,6 +1,7 @@
 import initialState from './initial-state';
 import userHandle from './user';
 import companiesHandle from './companies';
+import employeesHandle from './employees';
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -20,6 +21,14 @@ const reducer = (state = initialState, action) => {
         case 'COMPANY_LOGO_FILE':
         case 'COMPANY_LOGO':
             return companiesHandle(state, action);
+
+        case 'FETCH_EMPLOYEES_REQUEST':
+        case 'FETCH_EMPLOYEE_REQUEST':
+        case 'FETCH_EMPLOYEE_FAILED':
+        case 'RESET_EMPLOYEE':
+        case 'EMPLOYEE_DATA_CHANGE':
+        case 'FAILED_EMPLOYEE_REQUEST':
+            return employeesHandle(state, action);
 
         default:
             return state;

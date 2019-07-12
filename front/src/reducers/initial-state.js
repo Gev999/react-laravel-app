@@ -4,11 +4,16 @@ export default {
         email: '',
         password: '',
     },
+
     errors: {
         loginError: false,
         company: {},
+        employee: {}
     },
+
     companies: [],
     company: {},
-    isCompanyEdit: false,
+
+    employees: [],
+    employee: {},
 }

@@ -23,11 +23,8 @@ class Companies extends Component {
         if (window.confirm('Are you sure?')) {
             const id = e.target.value;
             this.apiService.deleteCompany(id)
-                .then(res => {
+                .then(() => {
                     this.getCompanies();
-                })
-                .catch(e => {
-                    console.log(e.response)
                 })
         }
     }

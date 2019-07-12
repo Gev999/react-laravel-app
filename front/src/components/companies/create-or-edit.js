@@ -8,9 +8,11 @@ import * as actions from '../../actions/companies';
 class CompanyCreateOrEdit extends Component {
     
     apiService = this.props.apiService;
+    isEdit = false;
 
     componentWillMount() {
         const { id } = this.props.match.params;
+        this.isEdit = !!id;
         if (id) {
             this.apiService.getCompany(id)
                 .then(response => {
@@ -39,9 +41,9 @@ class CompanyCreateOrEdit extends Component {
     formHandle = (e) => {
         e.preventDefault();
         const { company } = this.props;
-        const handle = this.props.match.params.id ? this.apiService.updateCompany : this.apiService.createCompany;
+        const handle = this.isEdit ? this.apiService.updateCompany : this.apiService.createCompany;
         handle(company)
-            .then(response => {
+            .then(() => {
                 this.props.history.push('/companies');
             })
             .catch(error => {
@@ -99,7 +101,7 @@ class CompanyCreateOrEdit extends Component {
                         <input className="form-control" id="website" name="website" type="text"
                             value={company.website ? company.website : ''} onChange={setCompanyData} />
                     </div>
-                    <button className="btn btn-outline-primary">{this.props.match.params.id ? 'Update' : 'Create'}</button>
+                    <button className="btn btn-outline-primary">{this.isEdit ? 'Update' : 'Create'}</button>
                     <Link to="/companies" className="ml-2 btn btn-outline-success">Cancel</Link>
                 </form>
             </div>
@@ -110,7 +112,6 @@ class CompanyCreateOrEdit extends Component {
 const mapStateToProps = (state) => {
     return {
         company: state.company,
-        isEdit: state.isCompanyEdit,
         errors: state.errors.company,
     }
 }

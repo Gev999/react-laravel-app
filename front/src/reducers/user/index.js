@@ -1,20 +1,46 @@
-import * as user from '../handles/user';
-
 const userHandle = (state, action) => {
     switch (action.type) {
 
         case 'LOG_IN':
-            return user.logInHandle(state, action.token);
+            localStorage.setItem('token', action.token);
+            return {
+                ...state,
+                errors: {
+                    ...state.errors,
+                    loginError: false,
+                },
+                isLoggedIn: true,
+            };
 
         case 'LOG_OUT':
-            return user.logOutHandle(state);
+            localStorage.removeItem('token');
+            return {
+                ...state,
+                user: {
+                    email: '',
+                    password: '',
+                },
+                isLoggedIn: false,
+            }
 
         case 'USER_INPUT_DATA':
-            return user.loginInputChangeHandle(state, action.payload);
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    [action.payload.name]: action.payload.value
+                }
+            }
 
         case 'USER_INPUT_DATA_ERROR':
-            return user.loginInputError(state);
-        
+            return {
+                ...state,
+                errors: {
+                    ...state.errors,
+                    loginError: true,
+                }
+            }
+
         default: return state;
     }
 }

@@ -24,7 +24,7 @@ class Login extends Component {
                 this.props.loggedIn(res.data.access_token);
                 this.props.history.push('/');
             })
-            .catch(err => {
+            .catch(e => {
                 this.props.userInputDataError();
             })
     }
