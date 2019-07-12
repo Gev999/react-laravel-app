@@ -15,7 +15,6 @@ const logOutHandle = (state) => {
     return {
         ...state,
         user: {
-            ...state.user,
             email: '',
             password: '',
         },

@@ -27,9 +27,10 @@ const userInputDataError = () => {
     }
 }
 
+
 export {
     loggedIn,
     loggedOut,
     userDataChange,
-    userInputDataError
+    userInputDataError,
 }

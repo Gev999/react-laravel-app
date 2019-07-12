@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import ErrorBoundary from '../error-boundary';
 import { withApiService } from '../hoc-helpers';
+import { connect } from 'react-redux';
+import { getCompany, failedToLoad } from '../../actions/companies';
 
 class Company extends Component {
 
-    state = {
-        company: null,
-        error: null,
-    }
     apiService = this.props.apiService;
 
     componentWillMount() {
@@ -18,19 +16,15 @@ class Company extends Component {
         const { id } = this.props.match.params;
         this.apiService.getCompany(id)
             .then(response => {
-                this.setState({
-                    company: response,
-                })
+                this.props.getCompany(response)
             })
             .catch(e => {
-                this.setState({
-                    error: e.response.data.error,
-                })
+                this.props.failedToLoad(e.response.data.error);
             })
     }
 
     getCompanyRow = () => {
-        const { company } = this.state;
+        const { company } = this.props;
         return (
             <tr>
                 <td><img alt="" src={company.logo} style={{ width: '50px' }} /></td>
@@ -42,10 +36,10 @@ class Company extends Component {
     }
 
     render() {
-        if (this.state.error) {
-            return <ErrorBoundary error={this.state.error} />
+        if (this.props.error) {
+            return <ErrorBoundary error={this.props.error} />
         }
-        const row = this.state.company ? this.getCompanyRow() : null;
+        const row =  this.getCompanyRow();
         return (
             <div className="container">
                 <table className="table table-hover table-striped table-border">
@@ -66,4 +60,16 @@ class Company extends Component {
     }
 }
 
-export default withApiService(Company)
+const mapStateToProps = ( state ) => {
+    return {
+        company: state.company,
+        error: state.errors.company.error,
+    }
+}
+
+const mapDispatchToProps = { 
+    getCompany,
+    failedToLoad,
+}
+
+export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Company))

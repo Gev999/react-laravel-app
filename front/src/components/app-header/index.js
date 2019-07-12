@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { loggedOut } from '../../actions';
+import { loggedOut } from '../../actions/user';
 import { connect } from 'react-redux';
 
 const Header = (props)=>{
-
     return (
         <React.Fragment>
             <nav className="navbar navbar-default">

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withApiService } from '../hoc-helpers';
+import { connect } from 'react-redux';
+import { getCompaniesList } from '../../actions/companies';
 
 class Companies extends Component {
-
-    state = {
-        companies: [],
-    }
 
     apiService = this.props.apiService;
 
@@ -17,9 +15,7 @@ class Companies extends Component {
     getCompanies = () => {
         this.apiService.getAllCompanies()
             .then(response => {
-                this.setState({
-                    companies: response,
-                })
+                this.props.getCompaniesList(response)
             })
     }
 
@@ -37,15 +33,12 @@ class Companies extends Component {
     }
 
     getCompaniesRows = () =>  {
-        const { companies } = this.state;
+        const { companies } = this.props;
         if (!companies) return null;
-        const imgStyle = {
-            width: '50px',
-        }
         return companies.map((company) => {
             return (
                 <tr key={company.id}>
-                    <td><img alt="" src={company.logo} style={imgStyle} /></td>
+                    <td><img alt="" src={company.logo} style={{width: '50px'}} /></td>
                     <td>{company.name}</td>
                     <td>{company.email}</td>
                     <td>{company.website}</td>
@@ -61,7 +54,7 @@ class Companies extends Component {
     }
 
     render() {
-        const { companies } = this.state;
+        const { companies } = this.props;
         const view = companies.length === 0 ? null : this.getCompaniesRows();
         return (
             <div className="container">
@@ -85,4 +78,8 @@ class Companies extends Component {
     }
 }
 
-export default withApiService(Companies)
+const mapStateToProps = ({ companies }) => ({ companies });
+const mapDispatchToProps = { getCompaniesList }
+
+
+export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Companies));

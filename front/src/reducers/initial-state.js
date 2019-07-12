@@ -6,5 +6,9 @@ export default {
     },
     errors: {
         loginError: false,
-    }
+        company: {},
+    },
+    companies: [],
+    company: {},
+    isCompanyEdit: false,
 }

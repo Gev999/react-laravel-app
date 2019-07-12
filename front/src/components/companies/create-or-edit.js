@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import { withApiService } from '../hoc-helpers';
 import ErrorBoundary from '../error-boundary';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/companies';
 
 class CompanyCreateOrEdit extends Component {
     
-    state = {
-        company: {},
-        isEdit: false,
-        errors: {},
-    }
     apiService = this.props.apiService;
 
     componentWillMount() {
@@ -17,75 +14,44 @@ class CompanyCreateOrEdit extends Component {
         if (id) {
             this.apiService.getCompany(id)
                 .then(response => {
-                    this.setState({
-                        company: response,
-                        isEdit: true,
-                    });
+                    this.props.getCompany(response);
                 })
                 .catch(error => {
-                    this.setState({
-                        errors: {
-                            ...this.state.errors,
-                            error: error.response.data.error,
-                        }
-                    });
+                    this.props.failedToLoad(error.response.data.error)
                 })
+        } else {
+            this.props.setCompanyEmpty()
         }
     }
 
-    onChangeHandle = (e) => {
-        this.setState({
-            company: {
-                ...this.state.company,
-                [e.target.name]: e.target.value
-            },
-            errors: {
-                ...this.state.errors,
-                [e.target.name]: null,
-            }
-        })
-    }
-
     onImageChangeHandle = (e) => {
-        this.setState({
-            company: {
-                ...this.state.company,
-                file: e.target.files[0],
-            }
-        })
+        this.props.setCompanyLogoFile(e.target.files[0]);
         let files = e.target.files || e.dataTransfer.files;
         if (!files.length)
             return;
         let reader = new FileReader();
         reader.onload = (e) => {
-            this.setState({
-                company: {
-                    ...this.state.company,
-                    logo: e.target.result,
-                }
-            })
+            this.props.setCompanyLogo(e.target.result);
         };
         reader.readAsDataURL(files[0]);
     }
 
     formHandle = (e) => {
         e.preventDefault();
-        const { company, isEdit } = this.state;
-        const handle = isEdit ? this.apiService.updateCompany : this.apiService.createCompany;
+        const { company } = this.props;
+        const handle = this.props.match.params.id ? this.apiService.updateCompany : this.apiService.createCompany;
         handle(company)
             .then(response => {
                 this.props.history.push('/companies');
             })
             .catch(error => {
-                this.setState({
-                    errors: error.response.data.errors,
-                })
+                this.props.failedRequest(error.response.data.errors)
             })
     }
 
 
     render() {
-        const { company, isEdit, errors } = this.state;
+        const { company, errors, setCompanyData } = this.props;
         if (errors.error) {
             return <ErrorBoundary error={errors.error} />
         }
@@ -110,7 +76,7 @@ class CompanyCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="name">Company name: </label>
                         <input className={`form-control ${nameErr}`} id="name" name="name" type="text"
-                            value={company.name ? company.name : ''} onChange={this.onChangeHandle}  required/>
+                            value={company.name ? company.name : ''} onChange={setCompanyData}  required/>
                     </div>
                     {nameErr &&
                         <div className="form-group">
@@ -120,7 +86,7 @@ class CompanyCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="mail">Email: </label>
                         <input className={`form-control ${emailErr}`} id="mail" name="email" type="email"
-                            value={company.email ? company.email : ''} onChange={this.onChangeHandle}
+                            value={company.email ? company.email : ''} onChange={setCompanyData}
                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
                     </div>
                     {emailErr &&
@@ -131,9 +97,9 @@ class CompanyCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="website">Website: </label>
                         <input className="form-control" id="website" name="website" type="text"
-                            value={company.website ? company.website : ''} onChange={this.onChangeHandle} />
+                            value={company.website ? company.website : ''} onChange={setCompanyData} />
                     </div>
-                    <button className="btn btn-outline-primary">{isEdit ? 'Update' : 'Create'}</button>
+                    <button className="btn btn-outline-primary">{this.props.match.params.id ? 'Update' : 'Create'}</button>
                     <Link to="/companies" className="ml-2 btn btn-outline-success">Cancel</Link>
                 </form>
             </div>
@@ -141,4 +107,16 @@ class CompanyCreateOrEdit extends Component {
     }
 }
 
-export default withApiService(withRouter(CompanyCreateOrEdit));
+const mapStateToProps = (state) => {
+    return {
+        company: state.company,
+        isEdit: state.isCompanyEdit,
+        errors: state.errors.company,
+    }
+}
+
+
+export default withApiService(
+                    withRouter(
+                        connect(mapStateToProps, actions)(CompanyCreateOrEdit)
+                    ));

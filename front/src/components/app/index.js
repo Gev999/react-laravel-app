@@ -10,11 +10,11 @@ import { ApiServiceProvider } from '../api-service-context';
 import ApiService from '../../api-service';
 import { connect } from 'react-redux';
 
-const App = (props) => {
+const App = ({ isLoggedIn }) => {
     const apiService = new ApiService();
     return (
         <ApiServiceProvider value={apiService}>
-            {props.isLoggedIn && <Header />}
+            {isLoggedIn && <Header />}
             <Switch>
                 <PrivateRoute exact path="/" component={Home} />
 
@@ -35,6 +35,6 @@ const App = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({ isLoggedIn: state.isLoggedIn })
+const mapStateToProps = (state) => ({ isLoggedIn: state.isLoggedIn });
 
 export default connect(mapStateToProps)(App);

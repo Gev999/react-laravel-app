@@ -3,8 +3,7 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import './login.css';
 import { connect } from 'react-redux';
-import { loggedIn, userDataChange, userInputDataError } from '../../actions'
-import { bindActionCreators } from 'redux';
+import { loggedIn, userDataChange, userInputDataError } from '../../actions/user'
 
 class Login extends Component {
 
@@ -62,12 +61,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        loggedIn, 
-        userDataChange,
-        userInputDataError,
-    }, dispatch);
-}
+const mapDispatchToProps = {
+    loggedIn,
+    userDataChange,
+    userInputDataError,
+};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
