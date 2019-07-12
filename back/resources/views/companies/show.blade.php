@@ -18,7 +18,7 @@
         <tbody>
             <tr>
                 <td>
-                    <img src="/storage/logos/{{$company->logo?$company->logo:'default-logo.png'}}" alt="" style="width: 50px"/>
+                    <img src="/storage/logos/{{$company->logo?$company->logo:'default.png'}}" alt="" style="width: 50px"/>
                 </td>
                 <td>{{ $company->name }}</td>
                 <td>{{ $company->email }}</td>

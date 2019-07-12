@@ -15,7 +15,7 @@
 
     <div class="form-group">
         <label for="logo">Logo: </label>
-        <img src="@if(isset($company))/storage/logos/{{$company->logo?$company->logo:'default-logo.png'}} @else # @endif"
+        <img src="@if(isset($company))/storage/logos/{{$company->logo?$company->logo:'default.png'}} @else # @endif"
             class="ml-2 mt-4 mb-4" alt="" style="width: 50px" id="blah"/>
         <br />
         <input type='file' id="logo" name="logo" accept="image/*" />

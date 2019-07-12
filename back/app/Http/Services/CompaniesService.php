@@ -22,6 +22,7 @@ class CompaniesService
     {
         $company = Company::find($id);
         return $company ? view('companies.show', [ 'company' => $company ]) : redirect()->action('CompaniesController@index');
+
     }
 
     public static function editCompany($id)
