@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from 'store'
 
 axios.interceptors.request.use((config) => {
-    const token = localStorage.getItem('toke');
+    const token = localStorage.getItem('token');
     if (token != null) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -48,7 +48,7 @@ class ApiService {
         return this.deleteItem(`${this._employeesURL}/${id}`);
     }
 
-    createCompany = async (company) => {
+    createCompany = (company) => {
         const { name, email, website, file } = company;
 
         const formData = new FormData();
@@ -57,7 +57,7 @@ class ApiService {
         formData.set('website', website ? website : '');
         formData.append('logo', file ? file : '');
 
-        return await axios({
+        return axios({
             method: 'POST',
             url: `${this._companiesURL}`,
             headers: {
@@ -67,7 +67,7 @@ class ApiService {
         })
     }
 
-    updateCompany = async (company) => {
+    updateCompany = (company) => {
         const { id, name, email, website, file } = company;
 
         const formData = new FormData();
@@ -80,7 +80,7 @@ class ApiService {
         }
         formData.append('_method', 'PUT');
 
-        return await axios({
+        return axios({
             method: 'POST',
             url: `${this._companiesURL}/${id}`,
             headers: {
@@ -90,12 +90,12 @@ class ApiService {
         })
     }
 
-    createEmployee = async (employee) => {
-        return await axios.post(`${this._employeesURL}`, employee)
+    createEmployee = (employee) => {
+        return axios.post(`${this._employeesURL}`, employee)
     }
 
-    updateEmployee = async (employee) => {
-        return await axios.put(`${this._employeesURL}/${employee.id}`, employee)
+    updateEmployee = (employee) => {
+        return axios.put(`${this._employeesURL}/${employee.id}`, employee)
     }
 
     // -------------------------------------------------
