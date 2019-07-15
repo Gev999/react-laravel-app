@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
 
         case actions.FETCH_COMPANIES_REQUEST:
         case actions.FETCH_COMPANY_REQUEST:
-        case actions.FETCH_COMPANY_FAILED:
+        case actions.FETCH_COMPANY_FAILURE:
         case actions.RESET_COMPANY:
         case actions.COMPANY_DATA_CHANGE:
         case actions.FAILED_COMPANY_REQUEST:
@@ -25,10 +25,10 @@ const reducer = (state = initialState, action) => {
 
         case actions.FETCH_EMPLOYEES_REQUEST:
         case actions.FETCH_EMPLOYEE_REQUEST:
-        case actions.FETCH_EMPLOYEE_FAILED:
+        case actions.FETCH_EMPLOYEE_FAILURE:
         case actions.RESET_EMPLOYEE:
         case actions.EMPLOYEE_DATA_CHANGE:
-        case actions.FAILED_EMPLOYEE_REQUEST:
+        case actions.FAILURE_EMPLOYEE_REQUEST:
             return employeesHandle(state, action);
 
         default:

@@ -1,10 +1,10 @@
 import {
     FETCH_EMPLOYEES_REQUEST,
     FETCH_EMPLOYEE_REQUEST,
-    FETCH_EMPLOYEE_FAILED,
+    FETCH_EMPLOYEE_FAILURE,
     RESET_EMPLOYEE,
     EMPLOYEE_DATA_CHANGE,
-    FAILED_EMPLOYEE_REQUEST,
+    FAILURE_EMPLOYEE_REQUEST,
 } from '../../actions'
 
 const employeesHandle = (state, action) => {
@@ -29,7 +29,7 @@ const employeesHandle = (state, action) => {
                 }
             }
 
-        case FETCH_EMPLOYEE_FAILED:
+        case FETCH_EMPLOYEE_FAILURE:
             return {
                 ...state,
                 errors: {
@@ -67,7 +67,7 @@ const employeesHandle = (state, action) => {
                 }
             }
 
-        case FAILED_EMPLOYEE_REQUEST:
+        case FAILURE_EMPLOYEE_REQUEST:
             return {
                 ...state,
                 errors: {

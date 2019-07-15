@@ -1,7 +1,7 @@
 import {
     FETCH_COMPANIES_REQUEST,
     FETCH_COMPANY_REQUEST,
-    FETCH_COMPANY_FAILED,
+    FETCH_COMPANY_FAILURE,
     RESET_COMPANY,
     COMPANY_DATA_CHANGE,
     FAILED_COMPANY_REQUEST,
@@ -32,7 +32,7 @@ const companiesHandle = (state, action) => {
                 }
             }
 
-        case FETCH_COMPANY_FAILED:
+        case FETCH_COMPANY_FAILURE:
             return {
                 ...state,
                 errors: {

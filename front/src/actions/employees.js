@@ -1,10 +1,10 @@
 import {
     FETCH_EMPLOYEES_REQUEST,
     FETCH_EMPLOYEE_REQUEST,
-    FETCH_EMPLOYEE_FAILED,
+    FETCH_EMPLOYEE_FAILURE,
     RESET_EMPLOYEE,
     EMPLOYEE_DATA_CHANGE,
-    FAILED_EMPLOYEE_REQUEST,
+    FAILURE_EMPLOYEE_REQUEST,
 } from './index'
 
 const getEmployeesList = (data) => {
@@ -23,7 +23,7 @@ const getEmployee = (data) => {
 
 const failedToLoad = (error) => {
     return {
-        type: FETCH_EMPLOYEE_FAILED,
+        type: FETCH_EMPLOYEE_FAILURE,
         payload: error,
     }
 }
@@ -46,7 +46,7 @@ const setEmployeeData = (e) => {
 
 const failedRequest = (errors) => {
     return {
-        type: FAILED_EMPLOYEE_REQUEST,
+        type: FAILURE_EMPLOYEE_REQUEST,
         payload: errors,
     }
 }
