@@ -1,7 +1,14 @@
+import{
+    LOG_IN,
+    LOG_OUT,
+    USER_INPUT_DATA,
+    USER_INPUT_DATA_ERROR,
+} from '../../actions'
+
 const userHandle = (state, action) => {
     switch (action.type) {
 
-        case 'LOG_IN':
+        case LOG_IN:
             localStorage.setItem('token', action.token);
             return {
                 ...state,
@@ -12,7 +19,7 @@ const userHandle = (state, action) => {
                 isLoggedIn: true,
             };
 
-        case 'LOG_OUT':
+        case LOG_OUT:
             localStorage.removeItem('token');
             return {
                 ...state,
@@ -23,7 +30,7 @@ const userHandle = (state, action) => {
                 isLoggedIn: false,
             }
 
-        case 'USER_INPUT_DATA':
+        case USER_INPUT_DATA:
             return {
                 ...state,
                 user: {
@@ -32,7 +39,7 @@ const userHandle = (state, action) => {
                 }
             }
 
-        case 'USER_INPUT_DATA_ERROR':
+        case USER_INPUT_DATA_ERROR:
             return {
                 ...state,
                 errors: {

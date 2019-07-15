@@ -1,13 +1,25 @@
+import {
+    FETCH_COMPANIES_REQUEST,
+    FETCH_COMPANY_REQUEST,
+    FETCH_COMPANY_FAILED,
+    RESET_COMPANY,
+    COMPANY_DATA_CHANGE,
+    FAILED_COMPANY_REQUEST,
+    COMPANY_LOGO_FILE,
+    COMPANY_LOGO,
+
+} from '../../actions'
+
 const companiesHandle = (state, action) => {
     switch (action.type) {
 
-        case 'FETCH_COMPANIES_REQUEST':
+        case FETCH_COMPANIES_REQUEST:
             return {
                 ...state,
                 companies: action.payload,
             }
 
-        case 'FETCH_COMPANY_REQUEST':
+        case FETCH_COMPANY_REQUEST:
             return {
                 ...state,
                 company: action.payload,
@@ -20,7 +32,7 @@ const companiesHandle = (state, action) => {
                 }
             }
 
-        case 'FETCH_COMPANY_FAILED':
+        case FETCH_COMPANY_FAILED:
             return {
                 ...state,
                 errors: {
@@ -32,7 +44,7 @@ const companiesHandle = (state, action) => {
                 }
             }
 
-        case 'RESET_COMPANY':
+        case RESET_COMPANY:
             return {
                 ...state,
                 company: {},
@@ -42,7 +54,7 @@ const companiesHandle = (state, action) => {
                 }
             }
 
-        case 'COMPANY_DATA_CHANGE':
+        case COMPANY_DATA_CHANGE:
             return {
                 ...state,
                 company: {
@@ -58,7 +70,7 @@ const companiesHandle = (state, action) => {
                 }
             }
 
-        case 'FAILED_COMPANY_REQUEST':
+        case FAILED_COMPANY_REQUEST:
             return {
                 ...state,
                 errors: {
@@ -67,7 +79,7 @@ const companiesHandle = (state, action) => {
                 }
             }
 
-        case 'COMPANY_LOGO_FILE':
+        case COMPANY_LOGO_FILE:
             return {
                 ...state,
                 company: {
@@ -76,7 +88,7 @@ const companiesHandle = (state, action) => {
                 }
             }
 
-        case 'COMPANY_LOGO':
+        case COMPANY_LOGO:
             return {
                 ...state,
                 company: {

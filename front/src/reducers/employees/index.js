@@ -1,13 +1,22 @@
+import {
+    FETCH_EMPLOYEES_REQUEST,
+    FETCH_EMPLOYEE_REQUEST,
+    FETCH_EMPLOYEE_FAILED,
+    RESET_EMPLOYEE,
+    EMPLOYEE_DATA_CHANGE,
+    FAILED_EMPLOYEE_REQUEST,
+} from '../../actions'
+
 const employeesHandle = (state, action) => {
     switch (action.type) {
 
-        case 'FETCH_EMPLOYEES_REQUEST':
+        case FETCH_EMPLOYEES_REQUEST:
             return {
                 ...state,
                 employees: action.payload,
             }
 
-        case 'FETCH_EMPLOYEE_REQUEST':
+        case FETCH_EMPLOYEE_REQUEST:
             return {
                 ...state,
                 employee: action.payload,
@@ -20,7 +29,7 @@ const employeesHandle = (state, action) => {
                 }
             }
 
-        case 'FETCH_EMPLOYEE_FAILED':
+        case FETCH_EMPLOYEE_FAILED:
             return {
                 ...state,
                 errors: {
@@ -32,7 +41,7 @@ const employeesHandle = (state, action) => {
                 }
             }
 
-        case 'RESET_EMPLOYEE':
+        case RESET_EMPLOYEE:
             return {
                 ...state,
                 employee: {},
@@ -42,7 +51,7 @@ const employeesHandle = (state, action) => {
                 }
             }
 
-        case 'EMPLOYEE_DATA_CHANGE':
+        case EMPLOYEE_DATA_CHANGE:
             return {
                 ...state,
                 employee: {
@@ -58,7 +67,7 @@ const employeesHandle = (state, action) => {
                 }
             }
 
-        case 'FAILED_EMPLOYEE_REQUEST':
+        case FAILED_EMPLOYEE_REQUEST:
             return {
                 ...state,
                 errors: {
