@@ -3,12 +3,15 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import './login.css';
 import { connect } from 'react-redux';
-import { loggedIn, userDataChange, userInputDataError } from 'store/actions/user'
+import { withApiService } from 'components/hoc-helpers';
+import { loggedIn, userDataChange, userInputDataError } from 'store/actions/user';
 
 class Login extends Component {
 
+    apiService = this.props.apiService;
+
     componentWillMount() {
-        if (this.props.isLoggedIn) {
+        if (this.props.authUser) {
             this.props.history.push('/');
         }
     }
@@ -21,7 +24,11 @@ class Login extends Component {
             password,
         })
             .then(res => {
-                this.props.loggedIn(res.data.access_token);
+                localStorage.setItem('token', res.data.access_token);
+                this.apiService.getUser()
+                    .then(res => {
+                        this.props.loggedIn(res.data.user);
+                    })
                 this.props.history.push('/');
             })
             .catch(e => {
@@ -55,7 +62,7 @@ class Login extends Component {
 
 const mapStateToProps = (state) => { 
     return {
-        isLoggedIn: state.isLoggedIn,
+        authUser: state.authUser,
         user: state.user,
         error: state.errors.loginError,
     }
@@ -67,4 +74,4 @@ const mapDispatchToProps = {
     userInputDataError,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(withApiService(connect(mapStateToProps, mapDispatchToProps)(Login)));

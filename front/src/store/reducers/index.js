@@ -31,6 +31,12 @@ const reducer = (state = initialState, action) => {
         case actions.FAILURE_EMPLOYEE_REQUEST:
             return employeesHandle(state, action);
 
+        case 'FETCH_USER_REQUEST':
+            return {
+                ...state,
+                authUser: action.payload,
+            }
+
         default:
             return state;
     }

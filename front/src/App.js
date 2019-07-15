@@ -9,32 +9,49 @@ import { Employees, Employee, EmployeeCreateOrEdit } from 'components/pages/empl
 import { ApiServiceProvider } from 'components/base/api-service-context';
 import ApiService from 'services/api-service';
 import { connect } from 'react-redux';
+import store from 'store'
 
-const App = ({ isLoggedIn }) => {
-    const apiService = new ApiService();
-    return (
-        <ApiServiceProvider value={apiService}>
-            {isLoggedIn && <Header />}
-            <Switch>
-                <PrivateRoute exact path="/" component={Home} />
+class App extends React.Component {
 
-                <PrivateRoute exact path="/companies/" component={Companies} />
-                <PrivateRoute exact path="/companies/:id(\d+)" component={Company} />
-                <PrivateRoute exact path="/companies/create" component={CompanyCreateOrEdit} />
-                <PrivateRoute exact path="/companies/:id(\d+)/edit" component={CompanyCreateOrEdit} />
+    apiService = new ApiService();
 
-                <PrivateRoute exact path="/employees/" component={Employees} />
-                <PrivateRoute exact path="/employees/:id(\d+)" component={Employee} />
-                <PrivateRoute exact path="/employees/create" component={EmployeeCreateOrEdit} />
-                <PrivateRoute exact path="/employees/:id(\d+)/edit" component={EmployeeCreateOrEdit} />
+    componentWillMount() {
+        localStorage.getItem('token') && this.apiService.getUser()
+            .then(res => {
+                store.dispatch({type: 'FETCH_USER_REQUEST', payload: res.data.user})
+            })
+    }
+    
+    render() {
+        const { user } = this.props;
+        return (
+            <ApiServiceProvider value={this.apiService}>
+                {user && <Header />}
+                <Switch>
+                    <PrivateRoute exact path="/" component={Home} />
 
-                <Route exact path="/login" component={Login} />
-                <Route render={() => <h1 style={{ textAlign: 'center' }}>Page not found!!</h1>} />
-            </Switch>
-        </ApiServiceProvider>
-    )
+                    <PrivateRoute exact path="/companies/" component={Companies} />
+                    <PrivateRoute exact path="/companies/:id(\d+)" component={Company} />
+                    <PrivateRoute exact path="/companies/create" component={CompanyCreateOrEdit} />
+                    <PrivateRoute exact path="/companies/:id(\d+)/edit" component={CompanyCreateOrEdit} />
+
+                    <PrivateRoute exact path="/employees/" component={Employees} />
+                    <PrivateRoute exact path="/employees/:id(\d+)" component={Employee} />
+                    <PrivateRoute exact path="/employees/create" component={EmployeeCreateOrEdit} />
+                    <PrivateRoute exact path="/employees/:id(\d+)/edit" component={EmployeeCreateOrEdit} />
+
+                    <Route exact path="/login" component={Login} />
+                    <Route render={() => <h1 style={{ textAlign: 'center' }}>Page not found!!</h1>} />
+                </Switch>
+            </ApiServiceProvider>
+        )
+    }
 }
 
-const mapStateToProps = ({ isLoggedIn }) => ({ isLoggedIn });
+const mapStateToProps = (state) => { 
+    return {
+        user: state.authUser,
+    }
+};
 
 export default connect(mapStateToProps)(App);

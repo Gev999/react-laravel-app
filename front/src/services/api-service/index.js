@@ -98,6 +98,10 @@ class ApiService {
         return axios.put(`${this._employeesURL}/${employee.id}`, employee)
     }
 
+    getUser = () => {
+        return axios.post(`${this._baseUrl}/api/auth/init`);
+    }
+
     // -------------------------------------------------
 
     getAllItems = async (url) => {

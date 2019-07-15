@@ -5,10 +5,10 @@ import{
     USER_INPUT_DATA_ERROR,
 } from './index'
 
-const loggedIn = (token) => {
+const loggedIn = (user) => {
     return {
         type: LOG_IN,
-        token,
+        payload: user,
     }
 }
 

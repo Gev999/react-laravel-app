@@ -9,14 +9,14 @@ const userHandle = (state, action) => {
     switch (action.type) {
 
         case LOG_IN:
-            localStorage.setItem('token', action.token);
+            console.log(action.payload)
             return {
                 ...state,
                 errors: {
                     ...state.errors,
                     loginError: false,
                 },
-                isLoggedIn: true,
+                authUser: action.payload,
             };
 
         case LOG_OUT:
@@ -27,7 +27,7 @@ const userHandle = (state, action) => {
                     email: '',
                     password: '',
                 },
-                isLoggedIn: false,
+                authUser: null,
             }
 
         case USER_INPUT_DATA:

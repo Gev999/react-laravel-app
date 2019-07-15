@@ -1,9 +1,10 @@
 export default {
-    isLoggedIn: !!localStorage.getItem('token'),
     user: {
         email: '',
         password: '',
     },
+
+    authUser: null,
 
     errors: {
         loginError: false,
