@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use App\Http\Requests\CheckCompanyData;
+use App\Http\Requests\CompanyRequest;
 use App\Http\Services\CompaniesService;
 
 class CompaniesController extends Controller
@@ -28,7 +28,7 @@ class CompaniesController extends Controller
         return view('companies.create');
     }
 
-    public function store(CheckCompanyData $request)
+    public function store(CompanyRequest $request)
     {
         CompaniesService::storeData($request);
         return redirect()->action('CompaniesController@index');
@@ -62,7 +62,7 @@ class CompaniesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CheckCompanyData $request, $id)
+    public function update(CompanyRequest $request, $id)
     {
         CompaniesService::updateData($request, $id);
         return redirect()->action('CompaniesController@index');

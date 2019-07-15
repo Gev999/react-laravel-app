@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { PrivateRoute } from '../hoc-helpers';
-import Login from '../login';
-import Home from '../home';
-import Header from '../app-header';
-import { Companies, Company, CompanyCreateOrEdit } from '../companies';
-import { Employees, Employee, EmployeeCreateOrEdit } from '../employess';
-import { ApiServiceProvider } from '../api-service-context';
-import ApiService from '../../api-service';
+import { PrivateRoute } from 'components/hoc-helpers';
+import Login from 'components/pages/login';
+import Home from 'components/pages/home';
+import Header from 'components/base/app-header';
+import { Companies, Company, CompanyCreateOrEdit } from 'components/pages/companies';
+import { Employees, Employee, EmployeeCreateOrEdit } from 'components/pages/employess';
+import { ApiServiceProvider } from 'components/base/api-service-context';
+import ApiService from 'services/api-service';
 import { connect } from 'react-redux';
 
 const App = ({ isLoggedIn }) => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { withApiService } from '../hoc-helpers';
-import { getEmployeesList } from '../../actions/employees';
+import { withApiService } from 'components/hoc-helpers';
+import { getEmployeesList } from 'store/actions/employees';
 import { connect } from 'react-redux';
 
 class Employees extends Component {

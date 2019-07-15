@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { withApiService } from '../hoc-helpers';
-import ErrorBoundary from '../error-boundary';
+import { withApiService } from 'components/hoc-helpers';
+import ErrorBoundary from 'components/base/error-boundary';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/companies';
+import * as actions from 'store/actions/companies';
 
 class CompanyCreateOrEdit extends Component {
     

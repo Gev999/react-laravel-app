@@ -5,7 +5,8 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
-use App\Http\Requests\CheckEmployeeData;
+use App\Http\Requests\EmployeeRequest;
+use App\Http\Services\API\EmployeesService;
 
 class EmployeesController extends Controller
 {
@@ -16,7 +17,8 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        return Employee::all()->toJson();
+        $employee = new Employee;
+        return response()->json($employee->all());
     }
 
     /**
@@ -25,10 +27,10 @@ class EmployeesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CheckEmployeeData $request)
+    public function store(EmployeeRequest $request)
     {
         $employee = new Employee;
-        self::addEmployeeData($employee, $request);
+        EmployeesService::addData($employee, $request);
         return response()->json('Employee added succesfully');
     }
 
@@ -54,11 +56,11 @@ class EmployeesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CheckEmployeeData $request, $id)
+    public function update(EmployeeRequest $request, $id)
     {
         $employee = Employee::find($id);
         if ($employee) {
-            self::addEmployeeData($employee, $request);
+            EmployeesService::addData($employee, $request);
             return response()->json('Employee updated succesfully');
         } 
         return response()->json(['error' => 'Employee with such id does not exist'], 404);
@@ -78,14 +80,5 @@ class EmployeesController extends Controller
             return response()->json('Employee deleted succesfully');
         }
         return response()->json(['error' => 'Employee with such id does not exist'], 404);
-    }
-
-    private function addEmployeeData($employee, $request) {
-        $employee->first_name = $request->input('first_name');
-        $employee->last_name = $request->input('last_name');
-        $employee->company_id = $request->input('company_id');
-        $employee->email = $request->input('email');
-        $employee->phone = $request->input('phone');
-        $employee->save();
     }
 }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { withApiService } from '../hoc-helpers';
+import { withApiService } from 'components/hoc-helpers';
 import { connect } from 'react-redux';
-import { getCompaniesList } from '../../actions/companies';
+import { getCompaniesList } from 'store/actions/companies';
 
 class Companies extends Component {
 

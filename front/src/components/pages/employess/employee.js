@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ErrorBoundary from '../error-boundary';
-import { withApiService } from '../hoc-helpers';
+import ErrorBoundary from 'components/base/error-boundary';
+import { withApiService } from 'components/hoc-helpers';
 import { connect } from 'react-redux';
-import { getEmployee, failedToLoad } from '../../actions/employees';
+import { getEmployee, failedToLoad } from 'store/actions/employees';
 
 class Employee extends Component {
 

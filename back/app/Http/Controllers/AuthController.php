@@ -38,9 +38,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
+    public function init()
     {
-        return response()->json(auth('api')->user());
+        $init = [
+            'user' => auth('api')->user(),
+            
+            //other props
+        ];
+        return response()->json($init);
     }
 
     /**

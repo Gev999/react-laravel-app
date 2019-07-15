@@ -5,7 +5,7 @@ import {
     RESET_EMPLOYEE,
     EMPLOYEE_DATA_CHANGE,
     FAILURE_EMPLOYEE_REQUEST,
-} from '../../actions'
+} from 'store/actions'
 
 const employeesHandle = (state, action) => {
     switch (action.type) {

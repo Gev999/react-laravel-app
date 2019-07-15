@@ -3,7 +3,7 @@ import{
     LOG_OUT,
     USER_INPUT_DATA,
     USER_INPUT_DATA_ERROR,
-} from '../../actions'
+} from 'store/actions'
 
 const userHandle = (state, action) => {
     switch (action.type) {

@@ -1,7 +1,25 @@
-import axios from 'axios'
+import axios from 'axios';
+import store from 'store'
 
-class ApiService
-{
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('toke');
+    if (token != null) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+axios.interceptors.response.use((response) => {
+    return response;
+}, (error) => {
+    if (error.response.status === 401) {
+        localStorage.removeItem('token');
+        store.dispatch({ type: 'LOG_OUT' }); 
+    }
+    return Promise.reject(error);
+});
+
+class ApiService {
     _baseUrl = 'http://127.0.0.1:8000';
     _companiesURL = `${this._baseUrl}/api/companies`;
     _employeesURL = `${this._baseUrl}/api/employees`;
@@ -31,12 +49,12 @@ class ApiService
     }
 
     createCompany = async (company) => {
-        const { name, email, website, file} = company;
+        const { name, email, website, file } = company;
 
         const formData = new FormData();
         formData.set('name', name ? name : '');
         formData.set('email', email ? email : '');
-        formData.set('website', website? website : '');
+        formData.set('website', website ? website : '');
         formData.append('logo', file ? file : '');
 
         return await axios({
@@ -44,12 +62,11 @@ class ApiService
             url: `${this._companiesURL}`,
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'Authorization': "Bearer " + localStorage.getItem('token'),
             },
             data: formData,
         })
     }
-    
+
     updateCompany = async (company) => {
         const { id, name, email, website, file } = company;
 
@@ -57,8 +74,8 @@ class ApiService
         formData.set('id', id ? id : '');
         formData.set('name', name ? name : '');
         formData.set('email', email ? email : '');
-        formData.set('website', website? website : '');
-        if (typeof logo==='object') {
+        formData.set('website', website ? website : '');
+        if (typeof logo === 'object') {
             formData.append('logo', file ? file : '');
         }
         formData.append('_method', 'PUT');
@@ -68,44 +85,28 @@ class ApiService
             url: `${this._companiesURL}/${id}`,
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'Authorization': "Bearer " + localStorage.getItem('token'),
             },
             data: formData,
         })
     }
 
     createEmployee = async (employee) => {
-        return await axios.post(`${this._employeesURL}`, 
-            {
-                token: localStorage.getItem('token'),
-                ...employee,
-            })
+        return await axios.post(`${this._employeesURL}`, employee)
     }
 
     updateEmployee = async (employee) => {
-        return await axios.put(`${this._employeesURL}/${employee.id}`, {
-            token: localStorage.getItem('token'),
-            ...employee,
-        })
+        return await axios.put(`${this._employeesURL}/${employee.id}`, employee)
     }
 
     // -------------------------------------------------
 
     getAllItems = async (url) => {
-        const result = await axios.get(`${url}`, {
-            params: {
-                token: localStorage.getItem('token'),
-            }
-        });
+        const result = await axios.get(`${url}`);
         return result.data;
     }
 
     getItem = async (url) => {
-        const result = await axios.get(`${url}`, {
-            params: {
-                token: localStorage.getItem('token'),
-            }
-        });
+        const result = await axios.get(`${url}`);
         return result.data;
     }
 
@@ -113,9 +114,6 @@ class ApiService
         const result = await axios({
             method: 'DELETE',
             url: `${url}`,
-            params: {
-                token:  localStorage.getItem('token'),
-            }
         });
         return result.data;
     }

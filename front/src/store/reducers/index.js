@@ -1,8 +1,8 @@
 import initialState from './initial-state';
-import userHandle from './user';
-import companiesHandle from './companies';
-import employeesHandle from './employees';
-import * as actions from '../actions';
+import userHandle from 'store/reducers/user';
+import companiesHandle from 'store/reducers/companies';
+import employeesHandle from 'store/reducers/employees';
+import * as actions from 'store/actions';
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {

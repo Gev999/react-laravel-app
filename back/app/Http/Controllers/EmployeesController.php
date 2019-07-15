@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use App\Http\Requests\CheckEmployeeData;
+use App\Http\Requests\EmployeeRequest;
 use App\Http\Services\EmployeesService;
 
 class EmployeesController extends Controller
@@ -28,7 +28,7 @@ class EmployeesController extends Controller
         return EmployeesService::create();
     }
 
-    public function store(CheckEmployeeData $request)
+    public function store(EmployeeRequest $request)
     {
         EmployeesService::storeData($request);
         return redirect()->action('EmployeesController@index');
@@ -62,7 +62,7 @@ class EmployeesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CheckEmployeeData $request, $id)
+    public function update(EmployeeRequest $request, $id)
     {
         EmployeesService::updateData($request, $id);
         return redirect()->action('EmployeesController@index');

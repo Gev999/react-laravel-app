@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import './login.css';
 import { connect } from 'react-redux';
-import { loggedIn, userDataChange, userInputDataError } from '../../actions/user'
+import { loggedIn, userDataChange, userInputDataError } from 'store/actions/user'
 
 class Login extends Component {
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import {ApiServiceConsumer} from '../api-service-context';
+import {ApiServiceConsumer} from 'components/base/api-service-context';
  
 const withApiService = (Wrap)=> {
     return (props)=> {

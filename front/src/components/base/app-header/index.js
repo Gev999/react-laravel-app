@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { loggedOut } from '../../actions/user';
+import { loggedOut } from 'store/actions/user';
 import { connect } from 'react-redux';
 
 const Header = (props)=>{

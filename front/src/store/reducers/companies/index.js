@@ -8,7 +8,7 @@ import {
     COMPANY_LOGO_FILE,
     COMPANY_LOGO,
 
-} from '../../actions'
+} from 'store/actions'
 
 const companiesHandle = (state, action) => {
     switch (action.type) {
