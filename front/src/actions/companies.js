@@ -1,33 +1,45 @@
+import {
+    FETCH_COMPANIES_REQUEST,
+    FETCH_COMPANY_REQUEST,
+    FETCH_COMPANY_FAILED,
+    RESET_COMPANY,
+    COMPANY_DATA_CHANGE,
+    FAILED_COMPANY_REQUEST,
+    COMPANY_LOGO_FILE,
+    COMPANY_LOGO,
+
+} from './index'
+
 const getCompaniesList = (data) => {
     return {
-        type: 'FETCH_COMPANIES_REQUEST',
+        type: FETCH_COMPANIES_REQUEST,
         payload: data,
     }
 }
 
 const getCompany = (data) => {
     return {
-        type: 'FETCH_COMPANY_REQUEST',
+        type: FETCH_COMPANY_REQUEST,
         payload: data,
     }
 }
 
 const failedToLoad = (error) => {
     return {
-        type: 'FETCH_COMPANY_FAILED',
+        type: FETCH_COMPANY_FAILED,
         payload: error,
     }
 }
 
 const setCompanyEmpty = () => {
     return {
-        type: 'RESET_COMPANY'
+        type: RESET_COMPANY
     }
 }
 
 const setCompanyData = (e) => {
     return {
-        type: 'COMPANY_DATA_CHANGE',
+        type: COMPANY_DATA_CHANGE,
         payload: {
             name: e.target.name,
             value: e.target.value,
@@ -37,21 +49,21 @@ const setCompanyData = (e) => {
 
 const failedRequest = (errors) => {
     return {
-        type: 'FAILED_COMPANY_REQUEST',
+        type: FAILED_COMPANY_REQUEST,
         payload: errors,
     }
 }
 
 const setCompanyLogoFile = (file) => {
     return {
-        type: 'COMPANY_LOGO_FILE',
+        type: COMPANY_LOGO_FILE,
         payload: file,
     }
 }
 
 const setCompanyLogo = (logo) => {
     return {
-        type: 'COMPANY_LOGO',
+        type: COMPANY_LOGO,
         payload: logo
     }
 }

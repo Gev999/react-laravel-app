@@ -1,33 +1,42 @@
+import {
+    FETCH_EMPLOYEES_REQUEST,
+    FETCH_EMPLOYEE_REQUEST,
+    FETCH_EMPLOYEE_FAILED,
+    RESET_EMPLOYEE,
+    EMPLOYEE_DATA_CHANGE,
+    FAILED_EMPLOYEE_REQUEST,
+} from './index'
+
 const getEmployeesList = (data) => {
     return {
-        type: 'FETCH_EMPLOYEES_REQUEST',
+        type: FETCH_EMPLOYEES_REQUEST,
         payload: data,
     }
 }
 
 const getEmployee = (data) => {
     return {
-        type: 'FETCH_EMPLOYEE_REQUEST',
+        type: FETCH_EMPLOYEE_REQUEST,
         payload: data,
     }
 }
 
 const failedToLoad = (error) => {
     return {
-        type: 'FETCH_EMPLOYEE_FAILED',
+        type: FETCH_EMPLOYEE_FAILED,
         payload: error,
     }
 }
 
 const setEmployeeEmpty = () => {
     return {
-        type: 'RESET_EMPLOYEE'
+        type: RESET_EMPLOYEE
     }
 }
 
 const setEmployeeData = (e) => {
     return {
-        type: 'EMPLOYEE_DATA_CHANGE',
+        type: EMPLOYEE_DATA_CHANGE,
         payload: {
             name: e.target.name,
             value: e.target.value,
@@ -37,7 +46,7 @@ const setEmployeeData = (e) => {
 
 const failedRequest = (errors) => {
     return {
-        type: 'FAILED_EMPLOYEE_REQUEST',
+        type: FAILED_EMPLOYEE_REQUEST,
         payload: errors,
     }
 }

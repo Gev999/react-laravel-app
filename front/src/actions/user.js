@@ -1,19 +1,26 @@
+import{
+    LOG_IN,
+    LOG_OUT,
+    USER_INPUT_DATA,
+    USER_INPUT_DATA_ERROR,
+} from './index'
+
 const loggedIn = (token) => {
     return {
-        type: 'LOG_IN',
+        type: LOG_IN,
         token,
     }
 }
 
 const loggedOut = () => {
     return {
-        type: 'LOG_OUT'
+        type: LOG_OUT
     }
 }
 
 const userDataChange = (e) => {
     return {
-        type: 'USER_INPUT_DATA',
+        type: USER_INPUT_DATA,
         payload: {
             name: e.target.name,
             value: e.target.value,
@@ -23,7 +30,7 @@ const userDataChange = (e) => {
 
 const userInputDataError = () => {
     return {
-        type: 'USER_INPUT_DATA_ERROR',
+        type: USER_INPUT_DATA_ERROR,
     }
 }
 
