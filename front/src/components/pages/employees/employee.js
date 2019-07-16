@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import ErrorBoundary from 'components/base/error-boundary';
 import { withApiService } from 'components/hoc-helpers';
 import { connect } from 'react-redux';
-import { getEmployee, failedToLoad } from 'store/actions/employees';
+import { getEmployee } from 'store/actions/employees';
 
 class Employee extends Component {
 
     apiService = this.props.apiService;
+
+    state = {
+        error: null,
+    }
 
     componentDidMount() {
         this.getEmployee();
@@ -19,7 +23,9 @@ class Employee extends Component {
                 this.props.getEmployee(response)
             })
             .catch(e => {
-                this.props.failedToLoad(e.response.data.error);
+                this.setState({
+                    error: e.response.data.error,
+                })
             })
     }
 
@@ -37,8 +43,8 @@ class Employee extends Component {
     }
 
     render() {
-        if (this.props.error) {
-            return <ErrorBoundary error={this.props.error} />
+        if (this.state.error) {
+            return <ErrorBoundary error={this.state.error} />
         }
         const row = this.getEmployeeRow();
         return (
@@ -71,7 +77,6 @@ const mapStateToProps = ( state ) => {
 
 const mapDispatchToProps = { 
     getEmployee,
-    failedToLoad,
 }
 
 export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Employee))

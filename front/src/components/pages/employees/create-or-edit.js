@@ -11,6 +11,10 @@ class EmployeeCreateOrEdit extends Component {
     apiService = this.props.apiService;
     isEdit  = false;
 
+    state = {
+        errors: {}
+    }
+
     componentDidMount() {
         const { id } = this.props.match.params;
         this.isEdit = !!id;
@@ -26,7 +30,12 @@ class EmployeeCreateOrEdit extends Component {
                         })
                 })
                 .catch(error => {
-                    this.props.failedToLoad(error.response.data.error)
+                    this.setState({
+                        errors: {
+                            ...this.state.errors,
+                            error: error.response.data.error,
+                        }
+                    })
                 })
         } else {
             this.props.setEmployeeEmpty()
@@ -46,8 +55,20 @@ class EmployeeCreateOrEdit extends Component {
                 this.props.history.push('/employees');
             })
             .catch(error => {
-                this.props.failedRequest(error.response.data.errors)
+                this.setState({
+                    errors: error.response.data.errors,
+                })
             })
+    }
+
+    onChangeHandle = (e) => {
+        this.props.setEmployeeData(e);
+        this.setState({
+            errors: {
+                ...this.state.errors,
+                [e.target.name]: null,
+            }
+        })
     }
 
     optionsList = () => {
@@ -59,7 +80,8 @@ class EmployeeCreateOrEdit extends Component {
 
 
     render() {
-        const { employee, setEmployeeData, errors, companies } = this.props;
+        const { employee, companies } = this.props;
+        const { errors } = this.state;
         if (errors.error) {
             return <ErrorBoundary error={errors.error} />
         }
@@ -78,7 +100,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="first-name">First name: </label>
                         <input className={`form-control ${firstNameErr}`} id="first-name" name="first_name" type="text"
-                            value={employee.first_name ? employee.first_name : ''} onChange={setEmployeeData} required />
+                            value={employee.first_name ? employee.first_name : ''} onChange={this.onChangeHandle} required />
                     </div>
                     {firstNameErr &&
                         <div className="form-group">
@@ -89,7 +111,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="last-name">Last name: </label>
                         <input className={`form-control ${lastNameErr}`} id="last-name" name="last_name" type="text"
-                            value={employee.last_name ? employee.last_name : ''} onChange={setEmployeeData} required />
+                            value={employee.last_name ? employee.last_name : ''} onChange={this.onChangeHandle} required />
                     </div>
                     {lastNameErr &&
                         <div className="form-group">
@@ -100,7 +122,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="company-id">Company</label>
                         <select name="company_id" className={`form-control ${companyIdErr}`} id="company-id"
-                            value={employee.company_id ? employee.company_id : ''} onChange={setEmployeeData} required>
+                            value={employee.company_id ? employee.company_id : ''} onChange={this.onChangeHandle} required>
                             {!employee.company_id && <option disabled value=''>Choose Company</option>}
                             {this.optionsList()}
                         </select>
@@ -114,7 +136,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="mail">Email: </label>
                         <input className={`form-control ${emailErr}`} id="mail" name="email" type="email"
-                            value={employee.email ? employee.email : ''} onChange={setEmployeeData}
+                            value={employee.email ? employee.email : ''} onChange={this.onChangeHandle}
                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
                     </div>
                     {emailErr &&
@@ -126,7 +148,7 @@ class EmployeeCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="phone">Phone: </label>
                         <input className="form-control" id="phone" name="phone" type="text"
-                            value={employee.phone ? employee.phone : ''} onChange={setEmployeeData} />
+                            value={employee.phone ? employee.phone : ''} onChange={this.onChangeHandle} />
                     </div>
                     {phoneErr &&
                         <div className="form-group">
@@ -145,7 +167,6 @@ class EmployeeCreateOrEdit extends Component {
 const mapStateToProps = (state) => {
     return {
         employee: state.employee,
-        errors: state.errors.employee,
         companies: state.companies,
     }
 }

@@ -5,7 +5,7 @@ import Login from 'components/pages/login';
 import Home from 'components/pages/home';
 import Header from 'components/base/app-header';
 import { Companies, Company, CompanyCreateOrEdit } from 'components/pages/companies';
-import { Employees, Employee, EmployeeCreateOrEdit } from 'components/pages/employess';
+import { Employees, Employee, EmployeeCreateOrEdit } from 'components/pages/employees';
 import { ApiServiceProvider } from 'components/base/api-service-context';
 import ApiService from 'services/api-service';
 import { connect } from 'react-redux';
@@ -18,10 +18,10 @@ class App extends React.Component {
     componentDidMount() {
         localStorage.getItem('token') && this.apiService.getUser()
             .then(res => {
-                store.dispatch({type: 'FETCH_USER_REQUEST', payload: res.data.user})
+                store.dispatch({ type: 'LOG_IN', payload: res.data.user })
             })
     }
-    
+
     render() {
         const { user } = this.props;
         return (
@@ -48,10 +48,6 @@ class App extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => { 
-    return {
-        user: state.authUser,
-    }
-};
+const mapStateToProps = ({ user }) => ({ user })
 
 export default connect(mapStateToProps)(App);

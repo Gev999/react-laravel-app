@@ -4,21 +4,34 @@ import axios from 'axios';
 import './login.css';
 import { connect } from 'react-redux';
 import { withApiService } from 'components/hoc-helpers';
-import { loggedIn, userDataChange, userInputDataError } from 'store/actions/user';
+import { loggedIn } from 'store/actions/user';
 
 class Login extends Component {
 
     apiService = this.props.apiService;
 
+    state = {
+        email: '',
+        password: '',
+        error: null,
+    }
+
     componentDidMount() {
-        if (this.props.authUser) {
+        if (this.props.user) {
             this.props.history.push('/');
         }
+    }
+    
+    onChangeHandle = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value,
+        })
+
     }
 
     isLoggedIn = (e) => {
         e.preventDefault();
-        const { email, password } = this.props.user;
+        const { email, password } = this.state;
         axios.post('http://127.0.0.1:8000/api/auth/login', {
             email,
             password,
@@ -32,25 +45,26 @@ class Login extends Component {
                 this.props.history.push('/');
             })
             .catch(e => {
-                this.props.userInputDataError();
+                this.setState({
+                    error: e.response,
+                })
             })
     }
 
     render() {
-        const { email, password } = this.props.user;
-        const { userDataChange, error } = this.props;
+        const { email, password, error } = this.state;
         const clazz = error ? "form-control err-field" : "form-control";
         return (
             <div className="container mt-5">
                 <form onSubmit={this.isLoggedIn} className="form-block">
                     <div className="form-group">
                         <input type="text" name="email" placeholder="Email" className={clazz}
-                            value={email} onChange={userDataChange} required
+                            value={email} onChange={this.onChangeHandle} required
                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
                     </div>
                     <div className="form-group">
                         <input type="password" name="password" placeholder="Password" className={clazz}
-                            value={password} onChange={userDataChange} required />
+                            value={password} onChange={this.onChangeHandle} required />
                     </div>
                     {error && (<p className='err-msg'>Wrong email or password</p>)}
                     <button className="btn btn-outline-secondary mt-2">Sign in</button>
@@ -60,18 +74,8 @@ class Login extends Component {
     }
 }
 
-const mapStateToProps = (state) => { 
-    return {
-        authUser: state.authUser,
-        user: state.user,
-        error: state.errors.loginError,
-    }
-}
+const mapStateToProps = ({ user }) => ({ user })
 
-const mapDispatchToProps = {
-    loggedIn,
-    userDataChange,
-    userInputDataError,
-};
+const mapDispatchToProps = { loggedIn };
 
 export default withRouter(withApiService(connect(mapStateToProps, mapDispatchToProps)(Login)));

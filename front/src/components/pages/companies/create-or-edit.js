@@ -10,6 +10,10 @@ class CompanyCreateOrEdit extends Component {
     apiService = this.props.apiService;
     isEdit = false;
 
+    state = {
+        errors: {},
+    }
+
     componentDidMount() {
         const { id } = this.props.match.params;
         this.isEdit = !!id;
@@ -19,7 +23,12 @@ class CompanyCreateOrEdit extends Component {
                     this.props.getCompany(response);
                 })
                 .catch(error => {
-                    this.props.failedToLoad(error.response.data.error)
+                    this.setState({
+                        errors: {
+                            ...this.state.errors,
+                            error: error.response.data.error,
+                        }
+                    })
                 })
         } else {
             this.props.setCompanyEmpty()
@@ -38,6 +47,16 @@ class CompanyCreateOrEdit extends Component {
         reader.readAsDataURL(files[0]);
     }
 
+    onChangeHandle = (e) => {
+        this.props.setCompanyData(e);
+        this.setState({
+            errors: {
+                ...this.state.errors,
+                [e.target.name]: null,
+            }
+        })
+    }
+
     formHandle = (e) => {
         e.preventDefault();
         const { company } = this.props;
@@ -47,13 +66,16 @@ class CompanyCreateOrEdit extends Component {
                 this.props.history.push('/companies');
             })
             .catch(error => {
-                this.props.failedRequest(error.response.data.errors)
+                this.setState({
+                    errors: error.response.data.errors,
+                })
             })
     }
 
 
     render() {
-        const { company, errors, setCompanyData } = this.props;
+        const { company } = this.props;
+        const { errors } = this.state;
         if (errors.error) {
             return <ErrorBoundary error={errors.error} />
         }
@@ -78,7 +100,7 @@ class CompanyCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="name">Company name: </label>
                         <input className={`form-control ${nameErr}`} id="name" name="name" type="text"
-                            value={company.name ? company.name : ''} onChange={setCompanyData}  required/>
+                            value={company.name ? company.name : ''} onChange={this.onChangeHandle}  required/>
                     </div>
                     {nameErr &&
                         <div className="form-group">
@@ -88,7 +110,7 @@ class CompanyCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="mail">Email: </label>
                         <input className={`form-control ${emailErr}`} id="mail" name="email" type="email"
-                            value={company.email ? company.email : ''} onChange={setCompanyData}
+                            value={company.email ? company.email : ''} onChange={this.onChangeHandle}
                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
                     </div>
                     {emailErr &&
@@ -99,7 +121,7 @@ class CompanyCreateOrEdit extends Component {
                     <div className="form-group">
                         <label htmlFor="website">Website: </label>
                         <input className="form-control" id="website" name="website" type="text"
-                            value={company.website ? company.website : ''} onChange={setCompanyData} />
+                            value={company.website ? company.website : ''} onChange={this.onChangeHandle} />
                     </div>
                     <button className="btn btn-outline-primary">{this.isEdit ? 'Update' : 'Create'}</button>
                     <Link to="/companies" className="ml-2 btn btn-outline-success">Cancel</Link>
@@ -112,7 +134,6 @@ class CompanyCreateOrEdit extends Component {
 const mapStateToProps = (state) => {
     return {
         company: state.company,
-        errors: state.errors.company,
     }
 }
 

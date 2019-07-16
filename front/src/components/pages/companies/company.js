@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import ErrorBoundary from 'components/base/error-boundary';
 import { withApiService } from 'components/hoc-helpers';
 import { connect } from 'react-redux';
-import { getCompany, failedToLoad } from 'store/actions/companies';
+import { getCompany  } from 'store/actions/companies';
 
 class Company extends Component {
 
     apiService = this.props.apiService;
+
+    state = {
+        error: null,
+    }
 
     componentDidMount() {
         this.getCompany();
@@ -19,7 +23,9 @@ class Company extends Component {
                 this.props.getCompany(response)
             })
             .catch(e => {
-                this.props.failedToLoad(e.response.data.error);
+                this.setState({
+                    error: e.response.data.error,
+                })
             })
     }
 
@@ -36,8 +42,8 @@ class Company extends Component {
     }
 
     render() {
-        if (this.props.error) {
-            return <ErrorBoundary error={this.props.error} />
+        if (this.state.error) {
+            return <ErrorBoundary error={this.state.error} />
         }
         const row =  this.getCompanyRow();
         return (
@@ -63,13 +69,11 @@ class Company extends Component {
 const mapStateToProps = ( state ) => {
     return {
         company: state.company,
-        error: state.errors.company.error,
     }
 }
 
 const mapDispatchToProps = { 
     getCompany,
-    failedToLoad,
 }
 
 export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Company))

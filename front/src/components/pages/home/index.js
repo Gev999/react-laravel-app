@@ -9,9 +9,9 @@ const Home = (props) => {
     )
 }
 
-const mapStateToProps = ({  authUser })=> {
+const mapStateToProps = ({  user })=> {
     return {
-        user: authUser,
+        user: user,
     }
 }
 
