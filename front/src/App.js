@@ -15,7 +15,7 @@ class App extends React.Component {
 
     apiService = new ApiService();
 
-    componentWillMount() {
+    componentDidMount() {
         localStorage.getItem('token') && this.apiService.getUser()
             .then(res => {
                 store.dispatch({type: 'FETCH_USER_REQUEST', payload: res.data.user})

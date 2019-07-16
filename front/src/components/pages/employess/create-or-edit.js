@@ -11,7 +11,7 @@ class EmployeeCreateOrEdit extends Component {
     apiService = this.props.apiService;
     isEdit  = false;
 
-    componentWillMount() {
+    componentDidMount() {
         const { id } = this.props.match.params;
         this.isEdit = !!id;
         if (id) {

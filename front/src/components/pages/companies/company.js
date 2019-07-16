@@ -8,7 +8,7 @@ class Company extends Component {
 
     apiService = this.props.apiService;
 
-    componentWillMount() {
+    componentDidMount() {
         this.getCompany();
     }
 

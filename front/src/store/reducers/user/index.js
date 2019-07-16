@@ -9,7 +9,6 @@ const userHandle = (state, action) => {
     switch (action.type) {
 
         case LOG_IN:
-            console.log(action.payload)
             return {
                 ...state,
                 errors: {

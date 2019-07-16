@@ -10,7 +10,7 @@ class Login extends Component {
 
     apiService = this.props.apiService;
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.props.authUser) {
             this.props.history.push('/');
         }

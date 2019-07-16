@@ -8,7 +8,7 @@ class Employee extends Component {
 
     apiService = this.props.apiService;
 
-    componentWillMount() {
+    componentDidMount() {
         this.getEmployee();
     }
 
