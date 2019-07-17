@@ -66,11 +66,7 @@ class Company extends Component {
     }
 }
 
-const mapStateToProps = ( state ) => {
-    return {
-        company: state.company,
-    }
-}
+const mapStateToProps = ( { companies } ) => ({ company: companies.company })
 
 const mapDispatchToProps = { 
     getCompany,

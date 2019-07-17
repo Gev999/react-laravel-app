@@ -2,21 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withApiService } from 'components/hoc-helpers';
 import { connect } from 'react-redux';
-import { getCompaniesList } from 'store/actions/companies';
+import { getAllCompanies } from 'store/actions/companies';
 
 class Companies extends Component {
 
     apiService = this.props.apiService;
 
     componentDidMount() {
-        this.getCompanies();
-    }
-
-    getCompanies = () => {
-        this.apiService.getAllCompanies()
-            .then(response => {
-                this.props.getCompaniesList(response)
-            })
+        this.props.getAllCompanies();
     }
 
     deleteCompany = (e) =>  {
@@ -24,7 +17,7 @@ class Companies extends Component {
             const id = e.target.value;
             this.apiService.deleteCompany(id)
                 .then(() => {
-                    this.getCompanies();
+                    this.props.getAllCompanies();
                 })
         }
     }
@@ -75,8 +68,8 @@ class Companies extends Component {
     }
 }
 
-const mapStateToProps = ({ companies }) => ({ companies });
-const mapDispatchToProps = { getCompaniesList }
+const mapStateToProps = ({ companies }) => ({ companies: companies.all });
+const mapDispatchToProps = { getAllCompanies }
 
 
 export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Companies));

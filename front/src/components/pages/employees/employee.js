@@ -68,15 +68,8 @@ class Employee extends Component {
     }
 }
 
-const mapStateToProps = ( state ) => {
-    return {
-        employee: state.employee,
-        error: state.errors.employee.error,
-    }
-}
+const mapStateToProps = ( { employees } ) => ({ employee: employees.employee })
 
-const mapDispatchToProps = { 
-    getEmployee,
-}
+const mapDispatchToProps = { getEmployee }
 
 export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Employee))

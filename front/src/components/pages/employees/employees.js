@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withApiService } from 'components/hoc-helpers';
-import { getEmployeesList } from 'store/actions/employees';
+import { getAllEmployees} from 'store/actions/employees';
 import { connect } from 'react-redux';
 
 class Employees extends Component {
@@ -9,14 +9,7 @@ class Employees extends Component {
     apiService = this.props.apiService;
 
     componentDidMount() {
-        this.getEmployees();
-    }
-
-    getEmployees = () => {
-        this.apiService.getAllEmployees()
-            .then(response => {
-                this.props.getEmployeesList(response);
-            })
+        this.props.getAllEmployees()
     }
 
     deleteEmployee = (e) => {
@@ -24,7 +17,7 @@ class Employees extends Component {
             const id = e.target.value;
             this.apiService.deleteEmployee(id)
                 .then(() => {
-                    this.getEmployees();
+                    this.props.getAllEmployees()
                 })
         }
     }
@@ -77,7 +70,7 @@ class Employees extends Component {
     }
 }
 
-const mapStateToProps = ({ employees }) => ({ employees });
-const mapDispatchToProps = { getEmployeesList }
+const mapStateToProps = ({ employees }) => ({ employees: employees.all });
+const mapDispatchToProps = { getAllEmployees }
 
 export default withApiService(connect(mapStateToProps, mapDispatchToProps)(Employees));

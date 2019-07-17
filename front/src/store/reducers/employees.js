@@ -6,35 +6,44 @@ import {
 } from 'store/actions'
 
 
-const employees = (state = [], action) => {
+const initialState = {
+    all: [],
+    employee: {},
+}
+
+const employees = (state = initialState, action) => {
     switch (action.type) {
 
         case FETCH_EMPLOYEES_REQUEST:
-            return action.payload;
+            return {
+                ...state,
+                all: action.payload,
+            }
         
-        default: return state;
-    }
-}
-
-const employee = (state = {}, action) => {
-    switch (action.type) {
-
         case FETCH_EMPLOYEE_REQUEST:
-            return action.payload;
+            return {
+                ...state,
+                employee: action.payload,
+            }
 
         case RESET_EMPLOYEE:
-            return  {};
+            return  {
+                ...state,
+                employee: {}
+            };
 
         case EMPLOYEE_DATA_CHANGE:
             return  {
-                    ...state,
+                ...state,
+                employee : {
+                    ...state.employee,
                     [action.payload.name]: action.payload.value,
-                };
+                }
+            }
 
         default: return state;
     }
 }
 
-export {
-    employees, employee,
-};
+
+export default employees;

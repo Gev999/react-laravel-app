@@ -16,6 +16,10 @@ class App extends React.Component {
     apiService = new ApiService();
 
     componentDidMount() {
+        this.getAuthUser();
+    }
+
+    getAuthUser = () => {
         localStorage.getItem('token') && this.apiService.getUser()
             .then(res => {
                 store.dispatch({ type: 'LOG_IN', payload: res.data.user })

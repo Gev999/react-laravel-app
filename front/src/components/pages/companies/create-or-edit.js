@@ -131,11 +131,7 @@ class CompanyCreateOrEdit extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        company: state.company,
-    }
-}
+const mapStateToProps = ( { companies } ) => ({ company: companies.company })
 
 
 export default withApiService(

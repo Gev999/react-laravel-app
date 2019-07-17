@@ -6,14 +6,10 @@ import {
     COMPANY_LOGO_FILE,
     COMPANY_LOGO,
 
-} from './index'
+} from './index';
 
-const getCompaniesList = (data) => {
-    return {
-        type: FETCH_COMPANIES_REQUEST,
-        payload: data,
-    }
-}
+import ApiService from 'services/api-service';
+const apiService = new ApiService();
 
 const getCompany = (data) => {
     return {
@@ -52,11 +48,21 @@ const setCompanyLogo = (logo) => {
     }
 }
 
+// thunk action
+
+const getAllCompanies = () => (dispatch) => {
+    return apiService.getAllCompanies().then(response=>dispatch({
+        type: FETCH_COMPANIES_REQUEST,
+        payload: response,
+    }))
+}
+
 export {
-    getCompaniesList,
     getCompany,
     setCompanyEmpty,
     setCompanyData,
     setCompanyLogo,
-    setCompanyLogoFile
+    setCompanyLogoFile,
+
+    getAllCompanies,
 }

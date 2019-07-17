@@ -3,14 +3,10 @@ import {
     FETCH_EMPLOYEE_REQUEST,
     RESET_EMPLOYEE,
     EMPLOYEE_DATA_CHANGE,
-} from './index'
+} from './index';
 
-const getEmployeesList = (data) => {
-    return {
-        type: FETCH_EMPLOYEES_REQUEST,
-        payload: data,
-    }
-}
+import ApiService from 'services/api-service';
+const apiService = new ApiService();
 
 const getEmployee = (data) => {
     return {
@@ -35,9 +31,19 @@ const setEmployeeData = (e) => {
     }
 }
 
+// thunk action
+
+const getAllEmployees = () => (dipsatch) => {
+    apiService.getAllEmployees().then(response => dipsatch({
+        type: FETCH_EMPLOYEES_REQUEST,
+        payload: response,
+    }))
+}
+
 export {
-    getEmployeesList,
     getEmployee,
     setEmployeeEmpty,
     setEmployeeData,
+
+    getAllEmployees,
 }

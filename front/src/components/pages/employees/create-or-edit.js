@@ -4,7 +4,7 @@ import ErrorBoundary from 'components/base/error-boundary';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from 'store/actions/employees';
-import { getCompaniesList } from 'store/actions/companies';
+import { getAllCompanies } from 'store/actions/companies';
 
 class EmployeeCreateOrEdit extends Component {
     
@@ -24,10 +24,7 @@ class EmployeeCreateOrEdit extends Component {
                     this.props.getEmployee(response)
                 })
                 .then(() => {
-                    this.apiService.getAllCompanies()
-                        .then(response => {
-                            this.props.getCompaniesList(response)
-                        })
+                    this.props.getAllCompanies();
                 })
                 .catch(error => {
                     this.setState({
@@ -39,10 +36,7 @@ class EmployeeCreateOrEdit extends Component {
                 })
         } else {
             this.props.setEmployeeEmpty()
-            this.apiService.getAllCompanies()
-                .then(response => {
-                    this.props.getCompaniesList(response)
-                })
+            this.props.getAllCompanies();
         }
     }
 
@@ -166,14 +160,14 @@ class EmployeeCreateOrEdit extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        employee: state.employee,
-        companies: state.companies,
+        employee: state.employees.employee,
+        companies: state.companies.all,
     }
 }
 
 const mapDispatchToProps = {
     ...actions,
-    getCompaniesList,
+    getAllCompanies,
 }
 
 export default withApiService(
