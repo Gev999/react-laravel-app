@@ -11,6 +11,7 @@ const loggedIn = (user) => {
 }
 
 const loggedOut = () => {
+    localStorage.removeItem('token');
     return {
         type: LOG_OUT
     }

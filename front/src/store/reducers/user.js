@@ -10,7 +10,6 @@ const user = (state = null, action)=> {
             return action.payload;
 
         case LOG_OUT:
-            localStorage.removeItem('token');
             return null      
 
         default: return state;

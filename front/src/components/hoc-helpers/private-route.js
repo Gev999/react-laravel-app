@@ -16,6 +16,7 @@ const hasAccess = () => {
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
     const currentTime = Date.now() / 1000;
     if (decodedToken.exp < currentTime) {
+        localStorage.removeItem('token');
         store.dispatch({ type: 'LOG_OUT' }); 
         return false;
     }
