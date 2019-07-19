@@ -24,6 +24,7 @@ class AuthController extends Controller
      */
     public function login()
     {
+        //$user = \App\User::where('email', $email_from_provider)->first();
         $credentials = request(['email', 'password']);
 
         if (! $token = auth('api')->attempt($credentials)) {

@@ -24,6 +24,7 @@ Route::group([
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('init', 'AuthController@init');
+    Route::post('provider/user', 'API\LoginController@handleProviderCallback');
 
 });
 

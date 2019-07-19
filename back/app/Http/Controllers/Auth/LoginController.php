@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Socialite;
 
 class LoginController extends Controller
@@ -46,7 +47,8 @@ class LoginController extends Controller
      */
     public function redirectToProvider($driver)
     {
-        return Socialite::driver($driver)->redirect();
+        //dd(Socialite::driver($driver));
+        return Socialite::driver($driver)->stateless()->redirect();
     }
 
     // ...
@@ -61,7 +63,6 @@ class LoginController extends Controller
         try {
             $user = Socialite::driver($driver)->stateless()->user();
         } catch (\Exception $e) {
-            //dd($e);
             return redirect()->route('login');
         }
 

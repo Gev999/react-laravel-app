@@ -5,6 +5,7 @@ import './login.css';
 import { connect } from 'react-redux';
 import { withApiService } from 'components/hoc-helpers';
 import { loggedIn } from 'store/actions/user';
+import GoogleLogin from 'react-google-login';
 
 class Login extends Component {
 
@@ -17,7 +18,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        if (this.props.user) {
+        if (localStorage.getItem('token')) {
             this.props.history.push('/');
         }
     }
@@ -37,18 +38,34 @@ class Login extends Component {
             password,
         })
             .then(res => {
-                localStorage.setItem('token', res.data.access_token);
-                this.apiService.getUser()
-                    .then(res => {
-                        this.props.loggedIn(res.data.user);
-                    })
-                this.props.history.push('/');
+                this.authUser(res);
             })
             .catch(e => {
                 this.setState({
                     error: e.response,
                 })
             })
+    }
+
+    responseGoogle = (response) =>{
+        if (response) {
+            axios.post('http://127.0.0.1:8000/api/auth/provider/user', {...response.profileObj, provider: 'google' })
+            .then(res=>{
+                this.authUser(res);
+            })
+            .catch(e=>{
+                console.log(e.response)
+            })
+        }
+    }
+
+    authUser = (res) => {
+        localStorage.setItem('token', res.data.access_token);
+        this.apiService.getUser()
+            .then(res => {
+                this.props.loggedIn(res.data.user);
+            })
+        this.props.history.push('/');
     }
 
     render() {
@@ -68,13 +85,25 @@ class Login extends Component {
                     </div>
                     {error && (<p className='err-msg'>Wrong email or password</p>)}
                     <button className="btn btn-outline-secondary mt-2">Sign in</button>
+                    <hr />
+                    <GoogleLogin
+                        clientId="152140133075-kscohg20nsdp2246d8r6jc735qp3qcqd.apps.googleusercontent.com"
+                        buttonText="Login"
+                        onSuccess={this.responseGoogle}
+                        onFailure={this.responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />
                 </form>
             </div>
         )
     }
 }
 
-const mapStateToProps = ({ user }) => ({ user })
+const mapStateToProps = ({  user })=> {
+    return {
+        user,
+    }
+}
 
 const mapDispatchToProps = { loggedIn };
 

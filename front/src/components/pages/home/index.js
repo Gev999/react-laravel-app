@@ -11,7 +11,7 @@ const Home = (props) => {
 
 const mapStateToProps = ({  user })=> {
     return {
-        user: user,
+        user,
     }
 }
 
