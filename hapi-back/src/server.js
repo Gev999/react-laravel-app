@@ -23,14 +23,6 @@ const init = async () => {
     server.auth.default('jwt'); // Use JWT strategy by default
 
     server.route([
-        {
-            method: 'GET', 
-            path: '/test',
-            config: {auth: false},
-            handler: function (request, h) {
-                return 0
-            }
-        },
         ...Routes,
     ]);
 

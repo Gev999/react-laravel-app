@@ -1,5 +1,5 @@
 const Boom = require('@hapi/boom');
-const Company = require('../models').Company;
+const Company = require('../../models').Company;
 const fs = require('fs');
 //const path = require('path');
 
@@ -87,7 +87,7 @@ const handleFileUpload = file => {
         const filename = file.hapi.filename
         const data = file._data
         const imgName = new Date().getTime() + filename
-        fs.writeFile('./upload/' + imgName, data, err => {
+        fs.writeFile('./public/upload/' + imgName, data, err => {
             if (err) {
                 reject(err)
             }

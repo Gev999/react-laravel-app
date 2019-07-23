@@ -1,0 +1,1 @@
+<h1>Hapijs - test</h1>

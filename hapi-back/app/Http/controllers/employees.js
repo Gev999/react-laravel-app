@@ -1,5 +1,5 @@
 const Boom = require('@hapi/boom');
-const Employee = require('../models').Employee;
+const Employee = require('../../models').Employee;
 
 module.exports = {
 
