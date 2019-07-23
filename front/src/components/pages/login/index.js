@@ -10,6 +10,7 @@ import GoogleLogin from 'react-google-login';
 class Login extends Component {
 
     apiService = this.props.apiService;
+    _baseUrl = 'http://127.0.0.1:8000/api/auth';
 
     state = {
         email: '',
@@ -33,7 +34,7 @@ class Login extends Component {
     isLoggedIn = (e) => {
         e.preventDefault();
         const { email, password } = this.state;
-        axios.post('http://127.0.0.1:8000/api/auth/login', {
+        axios.post(`${this._baseUrl}/login`, {
             email,
             password,
         })
@@ -49,7 +50,7 @@ class Login extends Component {
 
     responseGoogle = (response) =>{
         if (response) {
-            axios.post('http://127.0.0.1:8000/api/auth/provider/user', {...response.profileObj, provider: 'google' })
+            axios.post(`${this._baseUrl}/provider/user`, {...response.profileObj, provider: 'google' })
             .then(res=>{
                 this.authUser(res);
             })

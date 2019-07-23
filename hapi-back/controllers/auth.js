@@ -1,8 +1,8 @@
+require('dotenv').config();
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Boom = require('@hapi/boom');
-require('dotenv').config();
-
 const User = require('../models').User;
 const secret = process.env.JWT_SECRET;
 
