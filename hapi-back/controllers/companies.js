@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const Company = require('../models').Company;
 const fs = require('fs');
-const path = require('path');
+//const path = require('path');
 
 module.exports = {
 
@@ -33,7 +33,6 @@ module.exports = {
     },
 
     store: async (req) => {
-        return req.payload;
         try {
             const newCompany = await Company.create(req.payload);
             if (newCompany) {
@@ -75,5 +74,24 @@ module.exports = {
         catch (err) {
             return err;
         }
+    },
+
+    upload: async (req) => {
+        const response = await handleFileUpload(req.payload.file);
+        return response;
     }
+}
+
+const handleFileUpload = file => {
+    return new Promise((resolve, reject) => {
+        const filename = file.hapi.filename
+        const data = file._data
+        const imgName = new Date().getTime() + filename
+        fs.writeFile('./upload/' + imgName, data, err => {
+            if (err) {
+                reject(err)
+            }
+            resolve({ logo: imgName })
+        })
+    })
 }

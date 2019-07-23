@@ -1,6 +1,5 @@
 const Joi = require('@hapi/joi');
-const { index, show, store, destroy, update }= require('../controllers/companies');
-const fs = require('fs')
+const { index, show, store, destroy, update, upload }= require('../controllers/companies');
 
 const uri = '/api/companies';
 
@@ -9,19 +8,6 @@ const payload = {
     email: Joi.string().email(),
     logo: Joi.string(),
     website: Joi.string(),
-}
-
-const handleFileUpload = file => {
-    return new Promise((resolve, reject) => {
-        const filename = file.hapi.filename
-        const data = file._data
-        fs.writeFile('./upload/' + filename, data, err => {
-            if (err) {
-                reject(err)
-            }
-            resolve({ message: 'Upload successfully!' })
-        })
-    })
 }
 
 module.exports = [
@@ -82,9 +68,7 @@ module.exports = [
             },
 		},
 		handler: async (request, h) => {
-            const { payload } = request;
-            const response = handleFileUpload(payload.file);
-            return response;
+            return upload(request);
 		}
 	},
     {
