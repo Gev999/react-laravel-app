@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const { index, show, store, destroy, update, upload } = require('../app/Http/controllers/companies');
+const { index, show, store, destroy, update, upload } = require('app/Http/controllers/companies');
 
 const uri = '/api/companies';
 

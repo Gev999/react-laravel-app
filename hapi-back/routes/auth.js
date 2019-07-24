@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const auth = require('../app/Http/controllers/auth');
+const auth = require('app/Http/controllers/auth');
 
 module.exports = {
 	method: 'POST',

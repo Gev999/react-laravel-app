@@ -3,7 +3,7 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Boom = require('@hapi/boom');
-const User = require('../../models').User;
+const User = require('app/models').User;
 const secret = process.env.JWT_SECRET;
 
 async function Login(req, res) {

@@ -1,8 +1,11 @@
 'use strict';
 
+const path = require('path');
+require('app-module-path').addPath(path.join(__dirname, '../'));
+
 const Hapi  = require('hapi');
-const configJwt = require('../config/jwt');
-const Routes = require('../routes');
+const configJwt = require('config/jwt');
+const Routes = require('routes');
 
 const init = async () => {
 
@@ -13,6 +16,7 @@ const init = async () => {
             cors: true,
         }
     });
+
 
     await server.register([
         require('hapi-auth-jwt2'), 
