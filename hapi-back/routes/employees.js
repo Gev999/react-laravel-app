@@ -7,8 +7,8 @@ const payload = {
     first_name: Joi.string().required(),
     last_name: Joi.string().required(),
     company_id: Joi.number().required(),
-    email: Joi.string().email(),
-    phone: Joi.string(),
+    email: Joi.string().email().allow([null, '']),
+    phone: Joi.string().allow([null, '']),
 }
 
 module.exports = [
@@ -44,9 +44,10 @@ module.exports = [
         config: {
             validate: {
                 payload,
-            }
+            },
         },
         handler: (request, h) => {
+            //return request.payload;
             return update(request);
         }
     },

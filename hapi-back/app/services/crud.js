@@ -7,6 +7,9 @@ module.exports = {
         try {
             const items = await model.findAll();
             if (items) {
+                items.forEach(item=>{
+                    item.dataValues.logo = getImageFullPath(item.dataValues.logo);
+                })
                 return items;
             }
         }
@@ -19,6 +22,7 @@ module.exports = {
         try {
             const item= await model.findOne({ where: { id }, raw: true });
             if (item) {
+                item.logo = getImageFullPath(item.logo);
                 return item;
             } else {
                 return new Boom(null, { statusCode: 404 });
@@ -31,6 +35,8 @@ module.exports = {
 
     createItem: async (data, model) => {
         try {
+            console.log(data);
+            
             const newItem = await model.create(data);
             if (newItem) {
                 return 'Created succesfully';
@@ -45,6 +51,9 @@ module.exports = {
         try {
             const item = await model.findOne({ where: { id }, raw: true });
             if (item) {
+                if (item.logo) {
+                    fs.unlinkSync(`public/upload/${item.logo}`);
+                }
                 await model.update(data, { where: { id } });
                 return 'Updated succesfully';
             } else {
@@ -60,6 +69,9 @@ module.exports = {
         try {
             const item = await model.findOne({ where: { id }, raw: true });
             if (item) {
+                if (item.logo) {
+                    fs.unlinkSync(`public/upload/${item.logo}`);
+                }
                 await model.destroy({ where: { id } });
                 return 'Deleted successfully';
             } else {
@@ -84,4 +96,8 @@ module.exports = {
             })
         })
     }
+}
+
+const getImageFullPath = (image) => {
+    return image ? `http://127.0.0.1:8080/upload/${image}` : `http://127.0.0.1:8080/upload/default.png`
 }

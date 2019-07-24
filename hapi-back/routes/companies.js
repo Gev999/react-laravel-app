@@ -5,9 +5,9 @@ const uri = '/api/companies';
 
 const payload = {
     name: Joi.string().required(),
-    email: Joi.string().email(),
-    logo: Joi.string(),
-    website: Joi.string(),
+    email: Joi.string().email().allow([null, '']),
+    logo: Joi.string().allow([null, '']),
+    website: Joi.string().allow([null, '']),
 }
 
 module.exports = [
@@ -77,7 +77,7 @@ module.exports = [
         config: {auth: false},
         handler: {
             directory: {
-                path: 'upload'
+                path: 'public/upload'
             }
         }
     }

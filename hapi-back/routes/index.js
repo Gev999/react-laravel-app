@@ -3,7 +3,7 @@ const Companies = require('./companies');
 const Employees = require('./employees');
 
 module.exports = [
-    Auth,
+    ...Auth,
     ...Companies,
     ...Employees,
 ]

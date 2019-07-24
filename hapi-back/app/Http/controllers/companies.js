@@ -8,6 +8,8 @@ const {
     handleFileUpload
 } = require('app/services/crud');
 
+const fs = require('fs');
+
 module.exports = {
 
     index: () => getAll(Company),
