@@ -88,13 +88,13 @@ class Login extends Component {
                     {error && (<p className='err-msg'>Wrong email or password</p>)}
                     <button className="btn btn-outline-secondary mt-2">Sign in</button>
                     <hr />
-                    {/* <GoogleLogin
+                    <GoogleLogin
                         clientId="152140133075-kscohg20nsdp2246d8r6jc735qp3qcqd.apps.googleusercontent.com"
                         buttonText="Login"
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
                         cookiePolicy={'single_host_origin'}
-                    /> */}
+                    />
                 </form>
             </div>
         )
