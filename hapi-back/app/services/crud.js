@@ -51,7 +51,7 @@ module.exports = {
         try {
             const item = await model.findOne({ where: { id }, raw: true });
             if (item) {
-                if (item.logo) {
+                if (data.logo) {
                     fs.unlinkSync(`public/upload/${item.logo}`);
                 }
                 await model.update(data, { where: { id } });

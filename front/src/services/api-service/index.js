@@ -1,6 +1,9 @@
 import axios from 'axios';
 import store from 'store'
 
+//hapi     - http://127.0.0.1:8080'
+//laravel  - http://127.0.0.1:8000'
+
 axios.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token != null) {
@@ -21,7 +24,7 @@ axios.interceptors.response.use((response) => {
 });
 
 class ApiService {
-    _baseUrl = 'http://127.0.0.1:8080';
+    _baseUrl = 'http://127.0.0.1:8080'; 
     _companiesURL = `${this._baseUrl}/api/companies`;
     _employeesURL = `${this._baseUrl}/api/employees`;
 
@@ -69,21 +72,7 @@ class ApiService {
         // })
         // -----------------------------------------------
 
-        let result;
-        let logo;
-        if (file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            result = await axios({
-                method: 'POST',
-                url: `${this._baseUrl}/upload`,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                data: formData,
-            });
-            logo = result.data.logo;
-        }
+        let logo = await this.uploadFile(file);
         return axios.post(`${this._companiesURL}`, {
             name, email, logo, website
         })
@@ -113,24 +102,11 @@ class ApiService {
         //     data: formData,
         // })
         //--------------------------------------------------------
-        let result;
-        let logo;
-        if (file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            result = await axios({
-                method: 'POST',
-                url: `${this._baseUrl}/upload`,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                data: formData,
-            });
-            logo = result.data.logo;
-        }
+
+        let logo = await this.uploadFile(file);
 
         return axios.put(`${this._companiesURL}/${id}`, {
-            name, email, logo, website
+            name, email, logo, website,
         })
     }
 
@@ -167,6 +143,23 @@ class ApiService {
             url: `${url}`,
         });
         return result.data;
+    }
+    //--------------------------------------------------
+    uploadFile = async (file) => {
+        let result;
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            result =  await axios({
+                method: 'POST',
+                url: `${this._baseUrl}/upload`,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                data: formData,
+            });
+            return result.data.logo;
+        }
     }
 }
 
