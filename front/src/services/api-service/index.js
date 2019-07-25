@@ -24,8 +24,9 @@ axios.interceptors.response.use((response) => {
 });
 
 class ApiService {
-    _baseUrl = 'http://127.0.0.1:8080'; 
-    _companiesURL = `${this._baseUrl}/api/companies`;
+    _baseUrl = 'http://127.0.0.1:8000';
+    _nodeUrl = 'http://127.0.0.1:8080'
+    _companiesURL = `${this._nodeUrl}/api/companies`;
     _employeesURL = `${this._baseUrl}/api/employees`;
 
     getAllCompanies = () => {
@@ -152,7 +153,7 @@ class ApiService {
             formData.append('file', file);
             result =  await axios({
                 method: 'POST',
-                url: `${this._baseUrl}/upload`,
+                url: `${this._nodeUrl}/upload`,
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -18,7 +18,7 @@ class LoginController extends Controller
         $existingUser = User::where('email', $request->email)->first();
         if (!$existingUser) {
             $newUser                    = new User;
-            $newUser->provider_name     = $requset->provider;
+            $newUser->provider          = $requset->provider;
             $newUser->provider_id       = $request->googleId;
             $newUser->name              = $request->name;
             $newUser->email             = $request->email;

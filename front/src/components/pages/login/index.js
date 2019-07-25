@@ -10,7 +10,7 @@ import GoogleLogin from 'react-google-login';
 class Login extends Component {
 
     apiService = this.props.apiService;
-    _baseUrl = 'http://127.0.0.1:8080/api/auth';
+    _baseUrl = 'http://127.0.0.1:8000/api/auth';
 
     state = {
         email: '',
