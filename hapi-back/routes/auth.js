@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const auth = require('app/Http/controllers/auth');
+const { login, socialLogin } = require('app/Http/controllers/auth');
 
 module.exports = [
 	{
@@ -14,17 +14,17 @@ module.exports = [
 				}
 			}
 		},
-		handler: async function (request, h) {
-			return auth(request, h);
-		}
+		handler: async (request, h) => login(request, h),
 	},
 	{
 		method: 'POST',
 		path: '/api/auth/init',
-		handler: async function (request, h) {
-			return {
-				user: request.auth.credentials.user
-			};
-		}
+		handler: async (request, h) => ({user: request.auth.credentials.user})
 	},
+	{
+		method: 'POST',
+		path: '/api/auth/provider/user',
+		config: {auth: false},
+		handler: async (req, h) => socialLogin(req),
+	}
 ]
