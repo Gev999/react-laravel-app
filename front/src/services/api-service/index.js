@@ -24,9 +24,9 @@ axios.interceptors.response.use((response) => {
 });
 
 class ApiService {
-    _baseUrl = 'http://127.0.0.1:8000';
-    _nodeUrl = 'http://127.0.0.1:8080'
-    _companiesURL = `${this._nodeUrl}/api/companies`;
+    _baseUrl = 'http://php.blog.loc'
+    _nodeUrl = 'http://node.blog.loc'
+    _companiesURL = `${this._baseUrl}/api/companies`;
     _employeesURL = `${this._baseUrl}/api/employees`;
 
     getAllCompanies = () => {
@@ -57,26 +57,28 @@ class ApiService {
         const { name, email, website, file } = company;
 
         // --- Laravel version: must be changed!! ---
-        // const formData = new FormData();
-        // formData.set('name', name ? name : '');
-        // formData.set('email', email ? email : '');
-        // formData.set('website', website ? website : '');
-        // formData.append('logo', file ? file : '');
+        const formData = new FormData();
+        formData.set('name', name ? name : '');
+        formData.set('email', email ? email : '');
+        formData.set('website', website ? website : '');
+        formData.append('logo', file ? file : '');
 
-        // return axios({
-        //     method: 'POST',
-        //     url: `${this._companiesURL}`,
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //     },
-        //     data: formData,
-        // })
+        return axios({
+            method: 'POST',
+            url: `${this._companiesURL}`,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            data: formData,
+        })
         // -----------------------------------------------
 
-        let logo = await this.uploadFile(file);
-        return axios.post(`${this._companiesURL}`, {
-            name, email, logo, website
-        })
+        // --- Hapijs version Right VERSION --------------
+        // let logo = await this.uploadFile(file);
+        // return axios.post(`${this._companiesURL}`, {
+        //     name, email, logo, website
+        // })
+        //--------------------------------------------------
         
     }
 
@@ -84,31 +86,32 @@ class ApiService {
         const { id, name, email, website, file } = company;
 
         // --- Laravel version: must be changed!! ---
-        // const formData = new FormData();
-        // formData.set('id', id ? id : '');
-        // formData.set('name', name ? name : '');
-        // formData.set('email', email ? email : '');
-        // formData.set('website', website ? website : '');
-        // if (typeof logo === 'object') {
-        //     formData.append('logo', file ? file : '');
-        // }
-        // formData.append('_method', 'PUT');
+        const formData = new FormData();
+        formData.set('id', id ? id : '');
+        formData.set('name', name ? name : '');
+        formData.set('email', email ? email : '');
+        formData.set('website', website ? website : '');
+        if (typeof logo === 'object') {
+            formData.append('logo', file ? file : '');
+        }
+        formData.append('_method', 'PUT');
 
-        // return axios({
-        //     method: 'POST',
-        //     url: `${this._companiesURL}/${id}`,
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //     },
-        //     data: formData,
-        // })
+        return axios({
+            method: 'POST',
+            url: `${this._companiesURL}/${id}`,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            data: formData,
+        })
         //--------------------------------------------------------
 
-        let logo = await this.uploadFile(file);
-
-        return axios.put(`${this._companiesURL}/${id}`, {
-            name, email, logo, website,
-        })
+        // --- Hapijs version Right VERSION --------------
+        // let logo = await this.uploadFile(file);
+        // return axios.put(`${this._companiesURL}/${id}`, {
+        //     name, email, logo, website,
+        // })
+        //------------------------------------------------
     }
 
     createEmployee = (employee) => {

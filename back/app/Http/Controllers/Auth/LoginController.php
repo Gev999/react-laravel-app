@@ -72,7 +72,7 @@ class LoginController extends Controller
             auth()->login($existingUser, true);
         } else {
             $newUser                    = new User;
-            $newUser->provider_name     = $driver;
+            $newUser->provider          = $driver;
             $newUser->provider_id       = $user->getId();
             $newUser->name              = $user->getName();
             $newUser->email             = $user->getEmail();

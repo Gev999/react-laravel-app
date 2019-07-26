@@ -66,10 +66,9 @@ class CompanyCreateOrEdit extends Component {
                 this.props.history.push('/companies');
             })
             .catch(error => {
-                console.log(error)
-                // this.setState({
-                //     errors: error.response.data.errors,
-                // })
+                this.setState({
+                    errors: error.response.data.errors,
+                })
             })
     }
 
